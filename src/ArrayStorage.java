@@ -15,7 +15,7 @@ public class ArrayStorage {
 
     void save(Resume r) {
         storage[lastElement] = r;
-        lastElement += 1;
+        lastElement ++;
     }
 
     Resume get(String uuid) {
@@ -28,7 +28,7 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < lastElement; i++) {
             if (storage[i].toString().equals(uuid)) {
                 if (lastElement == 1) {
                     storage[i] = null;
@@ -37,7 +37,7 @@ public class ArrayStorage {
                 } else {
                     storage[i] = storage[lastElement - 1];
                     storage[lastElement - 1] = null;
-                    lastElement -= 1;
+                    lastElement --;
                     return;
                 }
             }
