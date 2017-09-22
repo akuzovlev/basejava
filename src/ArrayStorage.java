@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -7,9 +6,6 @@ import java.util.Arrays;
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     int lastElement = 0;
-
-    Resume empty = new Resume();
-
 
     void clear() {
         Arrays.fill(storage, null);
@@ -23,16 +19,16 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         for (int i = 0; i < lastElement; i++) {
-            if (storage[i].toString().equals(uuid)) {
+            if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
         }
-        return new Resume();
+        return null;
     }
 
     void delete(String uuid) {
         for (int i = 0; i < lastElement; i++) {
-            if (storage[i].toString().equals(uuid)) {
+            if (storage[i].uuid.equals(uuid)) {
                 storage[i] = storage[lastElement - 1];
                 storage[lastElement - 1] = null;
                 lastElement--;
