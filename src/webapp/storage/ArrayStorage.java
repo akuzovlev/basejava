@@ -19,7 +19,7 @@ public class ArrayStorage {
     public void update(Resume r) {
         // проверка что существует  System.out.println("Resume ...")
         int position = isExists(r.getUuid());
-        if ( position < 0) {
+        if (position < 0) {
             System.out.println("Resume is not exists in storage!");
         } else {
             //реализовать
@@ -33,7 +33,7 @@ public class ArrayStorage {
             System.out.println("Resume is already exists in storage!");
         } else {
             //проверку на переполнениe: System.out.println("...")
-            if (lastElement == 9999) {
+            if (lastElement == storage.length) {
                 System.out.println("Resume storage is full!");
             } else {
                 storage[lastElement] = r;
@@ -44,31 +44,24 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         //проверка что существует
-        if (isExists(uuid) < 0) {
+        int position = isExists(uuid);
+        if (position < 0) {
             System.out.println("Resume is not exists in storage!");
         } else {
-            for (int i = 0; i < lastElement; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    return storage[i];
-                }
-            }
+            return storage[position];
         }
         return null;
     }
 
     public void delete(String uuid) {
         // проверка что существует
-        if (isExists(uuid) < 0) {
+        int position = isExists(uuid);
+        if (position < 0) {
             System.out.println("Resume is not exists in storage!");
         } else {
-            for (int i = 0; i < lastElement; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    storage[i] = storage[lastElement - 1];
-                    storage[lastElement - 1] = null;
-                    lastElement--;
-                    return;
-                }
-            }
+            storage[position] = storage[lastElement - 1];
+            storage[lastElement - 1] = null;
+            lastElement--;
         }
     }
 
