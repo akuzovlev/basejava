@@ -1,7 +1,7 @@
 package webapp;
 
 import webapp.model.Resume;
-import webapp.storage.ArrayStorage;
+import webapp.storage.SortedArrayStorage;
 
 /**
  * Test for com.urise.webapp.storage.webapp.storage.ArrayStorage
@@ -9,7 +9,7 @@ import webapp.storage.ArrayStorage;
 
 
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
@@ -20,6 +20,7 @@ public class MainTestArrayStorage {
         r3.setUuid("uuid3");
 
         ARRAY_STORAGE.save(r1);
+
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
 

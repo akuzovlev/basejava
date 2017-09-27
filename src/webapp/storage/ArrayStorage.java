@@ -2,8 +2,6 @@ package webapp.storage;
 
 import webapp.model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Array based storage for Resumes
  */
@@ -22,6 +20,16 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index == -1) {
+            System.out.println("Resume " + uuid + " not exist");
+        } else {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+        }
+    }
 
     @Override
     protected int getIndex(String uuid) {
