@@ -7,30 +7,12 @@ import java.util.Arrays;
 /**
  * Created by kuzovlea on 27.09.2017.
  */
+
 public class SortedArrayStorage extends AbstractArrayStorage{
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public void update(Resume r) {
-
-    }
 
     @Override
     public void save(Resume r) {
 
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
     }
 
     @Override
@@ -39,4 +21,6 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         searchKey.setUuid(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
+
+
 }

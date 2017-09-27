@@ -6,6 +6,8 @@ import webapp.storage.ArrayStorage;
 /**
  * Test for com.urise.webapp.storage.webapp.storage.ArrayStorage
  */
+
+
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
@@ -29,6 +31,12 @@ public class MainTestArrayStorage {
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
         printAll();
+
+        Resume r4 = new Resume();
+        r4.setUuid("uuid3");
+        ARRAY_STORAGE.update(r4);
+        System.out.println("\nResume with " + r4.getUuid() + " updated");
+
         ARRAY_STORAGE.clear();
         printAll();
 
