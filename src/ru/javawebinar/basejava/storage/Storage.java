@@ -1,6 +1,6 @@
-package webapp.storage;
+package ru.javawebinar.basejava.storage;
 
-import webapp.model.Resume;
+import ru.javawebinar.basejava.model.Resume;
 
 /**
  * Created by kuzovlea on 27.09.2017.

@@ -1,10 +1,10 @@
-package webapp;
+package ru.javawebinar.basejava;
 
-import webapp.model.Resume;
-import webapp.storage.SortedArrayStorage;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.SortedArrayStorage;
 
 /**
- * Test for com.urise.webapp.storage.webapp.storage.ArrayStorage
+ * Test for com.urise.ru.javawebinar.basejava.storage.ru.javawebinar.basejava.storage.ArrayStorage
  */
 
 
