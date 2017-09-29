@@ -1,10 +1,8 @@
+
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-/**
- * Created by kuzovlea on 27.09.2017.
- */
 public interface Storage {
 
     void clear();
