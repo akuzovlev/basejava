@@ -77,16 +77,16 @@
 
 ![finish](https://user-images.githubusercontent.com/13649199/27245924-cab3618e-52f6-11e7-9655-4293149b4126.png)
 
-- Реализуйте класс `webapp.storage.ArrayStorage`: хранение резюме на основе массива (методы `clear, get, save, delete, getAll, size`). Не используйте в решении коллекции, реализацию на их основе мы добавим позднее.
-- Протестируйте вашу реализацию, запустив `webapp.MainTestArrayStorage.main()`: в IDEA слева на полях зеленая стрелка.
-- Протестируйте вашу реализацию интерактивно с помощью `webapp.MainArray.main()`.
+- Реализуйте класс `ru.javawebinar.basejava.storage.ArrayStorage`: хранение резюме на основе массива (методы `clear, get, save, delete, getAll, size`). Не используйте в решении коллекции, реализацию на их основе мы добавим позднее.
+- Протестируйте вашу реализацию, запустив `ru.javawebinar.basejava.MainTestArrayStorage.main()`: в IDEA слева на полях зеленая стрелка.
+- Протестируйте вашу реализацию интерактивно с помощью `ru.javawebinar.basejava.MainArray.main()`.
 - Дополнительные материалы по IntelliJ IDEA
   - <a href="https://github.com/JavaOPs/topjava/wiki/IDEA">Idea Wiki</a> (поставить кодировку UTF-8, поменять фонт по умолчанию на DejaVu)
   - <a href="http://learn.javajoy.net/debug-intellij-idea">Отладчик IntelliJ IDEA</a>
   - <a href="http://jeeconf.com/archive/jeeconf-2013/materials/intellij-idea/">Эффективная работа с кодом в IntelliJ IDEA</a>
 
 ### Optional
-- Модифицировать класс `webapp.storage.ArrayStorage`: хранить все резюме в начале storage (без дырок null), чтобы не перебирать каждый раз все 10000 элементов.
+- Модифицировать класс `ru.javawebinar.basejava.storage.ArrayStorage`: хранить все резюме в начале storage (без дырок null), чтобы не перебирать каждый раз все 10000 элементов.
 ```
 Хранеие резюме в storage (от 0 до size-1 элементов null нет):
 
@@ -94,5 +94,5 @@ r1, r2, r3,..., rn, null, null,..., null
 <----  size ----->
 <----  storage.length (10000)---------->
 ```
-- Посмотреть на класс `Arrays`. Там есть полезные вещи, которые могут упростить код `webapp.storage.ArrayStorage`.
-- Протестируйте реализацию, запустив webapp.MainArray.main(): в IDEA слева на полях зеленая стрелка.
+- Посмотреть на класс `Arrays`. Там есть полезные вещи, которые могут упростить код `ru.javawebinar.basejava.storage.ArrayStorage`.
+- Протестируйте реализацию, запустив ru.javawebinar.basejava.MainArray.main(): в IDEA слева на полях зеленая стрелка.
