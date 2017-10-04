@@ -5,10 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 public abstract class AbstractArrayStorageTest {
     private Storage storage;
@@ -22,7 +20,7 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume r3 = new Resume(UUID_3);
     private static final Resume r4 = new Resume(UUID_4);
 
-    public AbstractArrayStorageTest(Storage storage) {
+    AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -93,4 +91,13 @@ public abstract class AbstractArrayStorageTest {
 
     protected abstract Resume [] getProperResumeArray (Resume[] r);
 
+
+    @Test(expected = StorageException.class)
+    public void getStorageException() throws Exception {
+
+        for (int i = 0; i < 10000; i++) {
+            storage.save(r1);
+        }
+
+    }
 }
