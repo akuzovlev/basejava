@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.UUID;
 
 /**
- * com.urise.ru.javawebinar.basejava.model.ru.javawebinar.basejava.model.Resume class
+ * ru.javawebinar.basejava.model.Resume class
  */
 public class Resume implements Comparable<Resume> {
 
