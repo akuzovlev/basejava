@@ -96,7 +96,7 @@ public abstract class AbstractArrayStorageTest {
     public void getStorageException() throws Exception {
 
         for (int i = 0; i < 10000; i++) {
-            storage.save(r1);
+            storage.save(new Resume(Integer.toString(i)));
         }
 
     }
