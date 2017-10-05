@@ -20,6 +20,8 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume r3 = new Resume(UUID_3);
     private static final Resume r4 = new Resume(UUID_4);
 
+    protected static final int STORAGE_LIMIT = 10000;
+
     AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
@@ -96,11 +98,12 @@ public abstract class AbstractArrayStorageTest {
     public void getStorageException() throws Exception {
         int i = 4;
         try {
-            while (storage.size() < 10000) {
+            while (storage.size() < STORAGE_LIMIT) {
                 storage.save(new Resume(Integer.toString(i)));
                 i++;
             }
         } catch (StorageException e) {
+            Assert.fail();
         }
 
         storage.save(new Resume("test"));
