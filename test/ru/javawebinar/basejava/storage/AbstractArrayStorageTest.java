@@ -52,7 +52,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() throws Exception {
-        Resume[] r = {r1,r3,r2};
+        Resume[] r = {r1, r3, r2};
         Assert.assertArrayEquals(getProperResumeArray(r), storage.getAll());
 
     }
@@ -62,7 +62,7 @@ public abstract class AbstractArrayStorageTest {
         storage.save(r4);
         Assert.assertEquals(4, storage.size());
         Assert.assertEquals(storage.get(UUID_4), r4);
-        Resume[] r = {r1,r3,r2,r4};
+        Resume[] r = {r1, r3, r2, r4};
         Assert.assertArrayEquals(getProperResumeArray(r), storage.getAll());
 
     }
@@ -70,7 +70,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void delete() throws Exception {
         storage.delete(UUID_1);
-        Resume[] r = {r2,r3};
+        Resume[] r = {r2, r3};
         Assert.assertArrayEquals(getProperResumeArray(r), storage.getAll());
     }
 
@@ -89,15 +89,22 @@ public abstract class AbstractArrayStorageTest {
         storage.save(r1);
     }
 
-    protected abstract Resume [] getProperResumeArray (Resume[] r);
+    protected abstract Resume[] getProperResumeArray(Resume[] r);
 
 
     @Test(expected = StorageException.class)
     public void getStorageException() throws Exception {
-
-        for (int i = 0; i < 10000; i++) {
-            storage.save(new Resume(Integer.toString(i)));
+        int i = 4;
+        try {
+            while (storage.size() < 10000) {
+                storage.save(new Resume(Integer.toString(i)));
+                i++;
+            }
+        } catch (StorageException e) {
         }
+
+        storage.save(new Resume("test"));
+        storage.save(new Resume("test2"));
 
     }
 }
