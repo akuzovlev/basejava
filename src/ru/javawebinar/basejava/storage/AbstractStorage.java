@@ -5,8 +5,6 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Created by KuzovleA on 06.10.2017.
  */

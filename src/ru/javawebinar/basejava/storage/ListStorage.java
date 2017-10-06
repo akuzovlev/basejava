@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ import java.util.List;
 public class ListStorage extends AbstractStorage {
 
 
-    private final static List<Resume> resumeList = new LinkedList<Resume>();
+    private final static List<Resume> resumeList = new ArrayList<Resume>();
 
 
     @Override
