@@ -17,54 +17,55 @@ public abstract class AbstractStorage implements Storage {
     public abstract void clear();
 
     public void update(Resume r) {
-        if (!isExists(r.getUuid())) {
+        int index = getIndex(r.getUuid());
+        if (index < 0) {
             throw new NotExistStorageException(r.getUuid());
         } else {
-            updateElement(r);
+            updateElement(r, index);
         }
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     public abstract Resume[] getAll();
 
     public void save(Resume r) {
-        if (isExists(r.getUuid())) {
+        int index = getIndex(r.getUuid());
+        if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else if (size() >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            insertElement(r);
+            insertElement(r, index);
         }
     }
 
     public void delete(String uuid) {
 
-        if (!isExists(uuid)) {
+        int index = getIndex(uuid);
+        if (index < 0) {
             throw new NotExistStorageException(uuid);
         } else {
-            DeleteElement(uuid);
+            DeleteElement(uuid, index);
         }
     }
 
     public Resume get(String uuid) {
-        if (!isExists(uuid)) {
+        int index = getIndex(uuid);
+        if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
-        return getElement(uuid);
+        return getElement(uuid, index);
     }
 
-    protected abstract Resume getElement(String uuid);
+    protected abstract Resume getElement(String uuid, int index);
 
 
-    protected abstract void updateElement(Resume r);
+    protected abstract void updateElement(Resume r, int index);
 
-    protected abstract void DeleteElement(String uuid);
+    protected abstract void DeleteElement(String uuid, int index);
 
-    protected abstract void insertElement(Resume r);
+    protected abstract void insertElement(Resume r, int index);
 
-    protected abstract boolean isExists(String uuid);
+    protected abstract int getIndex(String uuid);
 
 
 }

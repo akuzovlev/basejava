@@ -34,28 +34,29 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume getElement(String uuid) {
+    public Resume getElement(String uuid, int index) {
         return resumeList.get(resumeList.indexOf(new Resume(uuid)));
     }
 
     @Override
-    protected void updateElement(Resume r) {
+    protected void updateElement(Resume r, int index) {
         resumeList.set(resumeList.indexOf(r), r);
     }
 
     @Override
-    protected void DeleteElement(String uuid) {
+    protected void DeleteElement(String uuid, int index) {
         resumeList.remove(new Resume(uuid));
     }
 
     @Override
-    protected void insertElement(Resume r) {
+    protected void insertElement(Resume r, int index) {
         resumeList.add(r);
     }
 
     @Override
-    protected boolean isExists(String uuid) {
-        return resumeList.contains(new Resume(uuid));
+    protected int getIndex(String uuid) {
+
+        return resumeList.indexOf(new Resume(uuid));
     }
 
 

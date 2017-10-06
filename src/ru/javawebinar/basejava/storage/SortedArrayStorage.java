@@ -20,6 +20,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int insertIdx = -index - 1;
         System.arraycopy(storage, insertIdx, storage, insertIdx + 1, size - insertIdx);
         storage[insertIdx] = r;
+        size++;
     }
 
     @Override
