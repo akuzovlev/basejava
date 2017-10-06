@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * Created by KuzovleA on 06.10.2017.
  */
-public abstract class AbstractStorage {
+public abstract class AbstractStorage implements Storage {
 
     protected static final int STORAGE_LIMIT = 10000;
 
@@ -22,7 +22,7 @@ public abstract class AbstractStorage {
         if (!isExists(r.getUuid())) {
             throw new NotExistStorageException(r.getUuid());
         } else {
-            save(r);
+            updateElement(r);
         }
     }
 
@@ -50,15 +50,23 @@ public abstract class AbstractStorage {
         }
     }
 
-    public abstract Resume get(String uuid);
+    public Resume get(String uuid) {
+        if (!isExists(uuid)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return getElement(uuid);
+    }
+
+    protected abstract Resume getElement(String uuid);
 
 
+    protected abstract void updateElement(Resume r);
 
     protected abstract void DeleteElement(String uuid);
 
     protected abstract void insertElement(Resume r);
 
-    protected abstract boolean isExists (String uuid);
+    protected abstract boolean isExists(String uuid);
 
 
 }

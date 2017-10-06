@@ -28,12 +28,19 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        return (Resume[]) resumeList.toArray();
+        Resume[] arr = new Resume[resumeList.size()];
+
+        return resumeList.toArray(arr);
     }
 
     @Override
-    public Resume get(String uuid) {
+    public Resume getElement(String uuid) {
         return resumeList.get(resumeList.indexOf(new Resume(uuid)));
+    }
+
+    @Override
+    protected void updateElement(Resume r) {
+        resumeList.set(resumeList.indexOf(r), r);
     }
 
     @Override
