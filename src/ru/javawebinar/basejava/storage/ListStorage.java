@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by KuzovleA on 06.10.2017.
@@ -12,7 +13,7 @@ import java.util.List;
 public class ListStorage extends AbstractStorage {
 
 
-    private final static List<Resume> resumeList = new ArrayList<Resume>();
+    private final List<Resume> resumeList = new ArrayList<Resume>();
 
 
     @Override
@@ -35,16 +36,16 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume getElement(String uuid, int index) {
-        return resumeList.get(resumeList.indexOf(new Resume(uuid)));
+        return resumeList.get(index);
     }
 
     @Override
     protected void updateElement(Resume r, int index) {
-        resumeList.set(resumeList.indexOf(r), r);
+        resumeList.set(index, r);
     }
 
     @Override
-    protected void DeleteElement(String uuid, int index) {
+    protected void deleteElement(String uuid, int index) {
         resumeList.remove(new Resume(uuid));
     }
 
@@ -56,7 +57,12 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected int getIndex(String uuid) {
 
-        return resumeList.indexOf(new Resume(uuid));
+        for (Resume r : resumeList) {
+            if (r.getUuid().equals(uuid)) {
+                return resumeList.indexOf(r);
+            }
+        }
+        return -1;
     }
 
 

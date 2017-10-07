@@ -40,7 +40,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void DeleteElement(String uuid, int index) {
+    protected void deleteElement(String uuid, int index) {
         resumeMap.remove(uuid);
     }
 
