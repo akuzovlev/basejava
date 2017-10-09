@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class MapStorage extends AbstractStorage {
 
-    private final static Map<String, Resume> resumeMap = new LinkedHashMap<String, Resume>();
+    private final Map<String, Resume> resumeMap = new LinkedHashMap<String, Resume>();
 
 
     @Override
@@ -30,18 +30,18 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume getElement(String uuid, int index) {
-        return resumeMap.get(uuid);
+    public Resume getElement(Object key) {
+        return resumeMap.get((String) key);
     }
 
     @Override
-    protected void updateElement(Resume r, int index) {
+    protected void updateElement(Resume r, Object key) {
         resumeMap.put(r.getUuid(), r);
     }
 
     @Override
-    protected void deleteElement(String uuid, int index) {
-        resumeMap.remove(uuid);
+    protected void deleteElement(Object key) {
+        resumeMap.remove((String) key);
     }
 
 
@@ -51,8 +51,9 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        return (resumeMap.get(uuid) != null) ? 1 : -1;
+    protected Object getIndex(String uuid) {
+        return (resumeMap.get(uuid) != null) ? uuid : -1;
     }
+
 
 }
