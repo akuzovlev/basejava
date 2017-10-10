@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -12,7 +14,6 @@ import java.util.Map;
 public class MapStorage extends AbstractStorage {
 
     private final Map<String, Resume> resumeMap = new HashMap<String, Resume>();
-
 
     @Override
     public int size() {
@@ -31,6 +32,15 @@ public class MapStorage extends AbstractStorage {
         return arr;
     }
 
+    public void save(Resume r) {
+        String uuid_value = (String) getIndex(r.getUuid());
+        if (uuid_value != null) {
+            throw new ExistStorageException(r.getUuid());
+        } else {
+            insertElement(r, 0);
+        }
+    }
+
     @Override
     public Resume getElement(Object key) {
         return resumeMap.get((String) key);
@@ -46,7 +56,6 @@ public class MapStorage extends AbstractStorage {
         resumeMap.remove((String) key);
     }
 
-
     @Override
     protected void insertElement(Resume r, int index) {
         resumeMap.put(r.getUuid(), r);
@@ -54,8 +63,15 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getIndex(String uuid) {
-        return (resumeMap.get(uuid) != null) ? uuid : -1;
+        return (resumeMap.get(uuid) != null) ? uuid : null;
     }
 
+    protected Object checkExistAndReturnIndex(String uuid) {
+        String uuid_value = (String) getIndex(uuid);
+        if (uuid_value == null) {
+            throw new NotExistStorageException(uuid);
+        }
+        return uuid_value;
+    }
 
 }

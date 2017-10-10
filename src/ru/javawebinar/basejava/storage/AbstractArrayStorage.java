@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -44,6 +46,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
+    public void save(Resume r) {
+        int index = (int) getIndex(r.getUuid());
+        if (index >= 0) {
+            throw new ExistStorageException(r.getUuid());
+        } else {
+            insertElement(r, index);
+        }
+    }
+
     protected abstract void InsertArrayElement(Resume r, int index);
 
     protected abstract void fillDeletedElement(int index);
@@ -63,6 +74,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         fillDeletedElement((int) key);
         storage[size - 1] = null;
         size--;
+    }
+
+    protected Object checkExistAndReturnIndex(String uuid) {
+        Integer index = (int) getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        return index;
     }
 
 }
