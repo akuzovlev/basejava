@@ -32,6 +32,7 @@ public class MapStorage extends AbstractStorage {
         return arr;
     }
 
+    @Override
     public void save(Resume r) {
         String uuid_value = (String) getIndex(r.getUuid());
         if (uuid_value != null) {
@@ -62,11 +63,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getIndex(String uuid) {
+    protected String getIndex(String uuid) {
         return (resumeMap.get(uuid) != null) ? uuid : null;
     }
 
-    protected Object checkExistAndReturnIndex(String uuid) {
+    @Override
+    protected String checkExistAndReturnIndex(String uuid) {
         String uuid_value = (String) getIndex(uuid);
         if (uuid_value == null) {
             throw new NotExistStorageException(uuid);
@@ -75,3 +77,4 @@ public class MapStorage extends AbstractStorage {
     }
 
 }
+

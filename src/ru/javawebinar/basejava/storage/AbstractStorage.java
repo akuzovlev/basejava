@@ -7,17 +7,9 @@ import ru.javawebinar.basejava.model.Resume;
  */
 public abstract class AbstractStorage implements Storage {
 
-    public abstract int size();
-
-    public abstract void clear();
-
     public void update(Resume r) {
         updateElement(r, checkExistAndReturnIndex(r.getUuid()));
     }
-
-    public abstract Resume[] getAll();
-
-    public abstract void save(Resume r);
 
     public void delete(String uuid) {
         deleteElement(checkExistAndReturnIndex(uuid));
@@ -26,6 +18,15 @@ public abstract class AbstractStorage implements Storage {
     public Resume get(String uuid) {
         return getElement(checkExistAndReturnIndex(uuid));
     }
+
+
+    public abstract int size();
+
+    public abstract void clear();
+
+    public abstract Resume[] getAll();
+
+    public abstract void save(Resume r);
 
     protected abstract Resume getElement(Object key);
 
@@ -38,6 +39,5 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Object getIndex(String uuid);
 
     protected abstract Object checkExistAndReturnIndex(String uuid);
-
 
 }

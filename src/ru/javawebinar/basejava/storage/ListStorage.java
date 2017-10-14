@@ -13,7 +13,6 @@ import java.util.List;
  */
 public class ListStorage extends AbstractStorage {
 
-
     private final List<Resume> resumeList = new ArrayList<Resume>();
 
 
@@ -35,6 +34,7 @@ public class ListStorage extends AbstractStorage {
         return resumeList.toArray(arr);
     }
 
+    @Override
     public void save(Resume r) {
         int index = (int) getIndex(r.getUuid());
         if (index >= 0) {
@@ -67,15 +67,17 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected Object getIndex(String uuid) {
 
-        for (Resume r : resumeList) {
+        for (int i = 0; i < resumeList.size(); i++) {
+            Resume r = resumeList.get(i);
             if (r.getUuid().equals(uuid)) {
-                return resumeList.indexOf(r);
+                return i;
             }
         }
         return -1;
     }
 
-    protected Object checkExistAndReturnIndex(String uuid) {
+    @Override
+    protected Integer checkExistAndReturnIndex(String uuid) {
         Integer index = (int) getIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);
