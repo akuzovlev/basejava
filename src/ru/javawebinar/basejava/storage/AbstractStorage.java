@@ -34,8 +34,6 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void deleteElement(Object key);
 
-    protected abstract void insertElement(Resume r, int index);
-
     protected abstract Object getIndex(String uuid);
 
     protected abstract Object checkExistAndReturnIndex(String uuid);

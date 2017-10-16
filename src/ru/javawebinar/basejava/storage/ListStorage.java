@@ -40,7 +40,7 @@ public class ListStorage extends AbstractStorage {
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            insertElement(r, index);
+            resumeList.add(r);
         }
     }
 
@@ -60,12 +60,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void insertElement(Resume r, int index) {
-        resumeList.add(r);
-    }
-
-    @Override
-    protected Object getIndex(String uuid) {
+    protected Integer getIndex(String uuid) {
 
         for (int i = 0; i < resumeList.size(); i++) {
             Resume r = resumeList.get(i);

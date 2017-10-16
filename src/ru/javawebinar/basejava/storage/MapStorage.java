@@ -38,7 +38,7 @@ public class MapStorage extends AbstractStorage {
         if (uuid_value != null) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            insertElement(r, 0);
+            resumeMap.put(r.getUuid(), r);
         }
     }
 
@@ -55,11 +55,6 @@ public class MapStorage extends AbstractStorage {
     @Override
     protected void deleteElement(Object key) {
         resumeMap.remove((String) key);
-    }
-
-    @Override
-    protected void insertElement(Resume r, int index) {
-        resumeMap.put(r.getUuid(), r);
     }
 
     @Override
