@@ -1,83 +1,60 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by KuzovleA on 06.10.2017.
- */
 public class ListStorage extends AbstractStorage {
-
-    private final List<Resume> resumeList = new ArrayList<Resume>();
-
+    private List<Resume> list = new ArrayList<>();
 
     @Override
-    public int size() {
-        return resumeList.size();
+    protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected void doUpdate(Resume r, Object searchKey) {
+        list.set((Integer) searchKey, r);
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        list.add(r);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return list.get((Integer) searchKey);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        list.remove(((Integer) searchKey).intValue());
     }
 
     @Override
     public void clear() {
-        resumeList.clear();
-
+        list.clear();
     }
 
     @Override
     public Resume[] getAll() {
-        Resume[] arr = new Resume[resumeList.size()];
-
-        return resumeList.toArray(arr);
+        return list.toArray(new Resume[list.size()]);
     }
 
     @Override
-    public void save(Resume r) {
-        int index = (int) getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            resumeList.add(r);
-        }
+    public int size() {
+        return list.size();
     }
-
-    @Override
-    public Resume getElement(Object key) {
-        return resumeList.get((int) key);
-    }
-
-    @Override
-    protected void updateElement(Resume r, Object key) {
-        resumeList.set((int) key, r);
-    }
-
-    @Override
-    protected void deleteElement(Object key) {
-        resumeList.remove((int) key);
-    }
-
-    @Override
-    protected Integer getIndex(String uuid) {
-
-        for (int i = 0; i < resumeList.size(); i++) {
-            Resume r = resumeList.get(i);
-            if (r.getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    protected Integer checkExistAndReturnIndex(String uuid) {
-        Integer index = (int) getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return index;
-    }
-
 }

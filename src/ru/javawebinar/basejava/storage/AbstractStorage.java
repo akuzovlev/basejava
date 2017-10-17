@@ -1,41 +1,56 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-/**
- * Created by KuzovleA on 06.10.2017.
- */
 public abstract class AbstractStorage implements Storage {
 
+    protected abstract Object getSearchKey(String uuid);
+
+    protected abstract void doUpdate(Resume r, Object searchKey);
+
+    protected abstract boolean isExist(Object searchKey);
+
+    protected abstract void doSave(Resume r, Object searchKey);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected abstract void doDelete(Object searchKey);
+
     public void update(Resume r) {
-        updateElement(r, checkExistAndReturnIndex(r.getUuid()));
+        Object searchKey = getExistedSearchKey(r.getUuid());
+        doUpdate(r, searchKey);
+    }
+
+    public void save(Resume r) {
+        Object searchKey = getNotExistedSearchKey(r.getUuid());
+        doSave(r, searchKey);
     }
 
     public void delete(String uuid) {
-        deleteElement(checkExistAndReturnIndex(uuid));
+        Object searchKey = getExistedSearchKey(uuid);
+        doDelete(searchKey);
     }
 
     public Resume get(String uuid) {
-        return getElement(checkExistAndReturnIndex(uuid));
+        Object searchKey = getExistedSearchKey(uuid);
+        return doGet(searchKey);
     }
 
+    private Object getExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return searchKey;
+    }
 
-    public abstract int size();
-
-    public abstract void clear();
-
-    public abstract Resume[] getAll();
-
-    public abstract void save(Resume r);
-
-    protected abstract Resume getElement(Object key);
-
-    protected abstract void updateElement(Resume r, Object key);
-
-    protected abstract void deleteElement(Object key);
-
-    protected abstract Object getIndex(String uuid);
-
-    protected abstract Object checkExistAndReturnIndex(String uuid);
-
+    private Object getNotExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new ExistStorageException(uuid);
+        }
+        return searchKey;
+    }
 }
