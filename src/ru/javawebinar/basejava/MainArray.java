@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 /**
  * Test for ru.javawebinar.basejava.storage.ArrayStorage
  */
+
 public class MainArray {
     private final static Storage ARRAY_STORAGE = new ArrayStorage();
 
