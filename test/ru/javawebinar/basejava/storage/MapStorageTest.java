@@ -7,7 +7,7 @@ import ru.javawebinar.basejava.exception.StorageException;
 /**
  * Created by Storm on 06.10.2017.
  */
-public class MapStorageTest extends AbstractArrayStorageTest {
+public class MapStorageTest extends AbstractStorageTest {
 
     public MapStorageTest() {
         super(new MapStorage());
