@@ -1,75 +1,57 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Created by KuzovleA on 06.10.2017.
- */
+// create new MapStorage with search key not uuid
 public class MapStorage extends AbstractStorage {
-
-    private final Map<String, Resume> resumeMap = new HashMap<String, Resume>();
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
-    public int size() {
-        return resumeMap.size();
+    protected Resume getSearchKey(String uuid) {
+        return map.get(uuid);
+    }
+
+    @Override
+    protected void doUpdate(Resume r, Object searchKey) {
+        map.put(((Resume)searchKey).getUuid(), r);
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        map.put(r.getUuid(), r);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return (Resume) searchKey;
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        map.remove(((Resume)searchKey).getUuid());
     }
 
     @Override
     public void clear() {
-        resumeMap.clear();
+        map.clear();
     }
 
     @Override
-    public Resume[] getAll() {
-        Resume[] arr = new Resume[resumeMap.size()];
-        Arrays.sort(resumeMap.values().toArray(arr));
-        return arr;
+    public List<Resume> getAllSorted() {
+        List<Resume> result = new ArrayList<Resume>(map.values());
+        Collections.sort(result);
+        return result;
     }
 
     @Override
-    public void save(Resume r) {
-        String uuid_value = (String) getIndex(r.getUuid());
-        if (uuid_value != null) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            resumeMap.put(r.getUuid(), r);
-        }
+    public int size() {
+        return map.size();
     }
-
-    @Override
-    public Resume getElement(Object key) {
-        return resumeMap.get((String) key);
-    }
-
-    @Override
-    protected void updateElement(Resume r, Object key) {
-        resumeMap.put(r.getUuid(), r);
-    }
-
-    @Override
-    protected void deleteElement(Object key) {
-        resumeMap.remove((String) key);
-    }
-
-    @Override
-    protected String getIndex(String uuid) {
-        return (resumeMap.get(uuid) != null) ? uuid : null;
-    }
-
-    @Override
-    protected String checkExistAndReturnIndex(String uuid) {
-        String uuid_value = (String) getIndex(uuid);
-        if (uuid_value == null) {
-            throw new NotExistStorageException(uuid);
-        }
-        return uuid_value;
-    }
-
 }
-
