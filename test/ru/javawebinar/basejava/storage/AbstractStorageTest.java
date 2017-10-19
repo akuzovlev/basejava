@@ -99,12 +99,12 @@ public abstract class AbstractStorageTest {
     public void saveOverflow() throws Exception {
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume(Integer.toString(i)));
             }
         } catch (StorageException e) {
             Assert.fail();
         }
-        storage.save(new Resume());
+        storage.save(new Resume("test"));
     }
 
     @Test(expected = NotExistStorageException.class)
