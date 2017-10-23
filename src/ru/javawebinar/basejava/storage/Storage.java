@@ -4,7 +4,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.List;
 
-// refactoring
 public interface Storage {
 
     void clear();
@@ -21,9 +20,6 @@ public interface Storage {
      * @return array, contains only Resumes in storage (without null)
      */
     List<Resume> getAllSorted();
-
-//  return list, sorted by name
-//  List<Resume> getAllSorted();
 
     int size();
 }
