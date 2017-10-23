@@ -14,13 +14,13 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
 
     private String fullName;
-    private List<Contact> contacts;
+    private List<Contact> contacts = new ArrayList<>();
     private String personal;
     private String position;
-    private List<String> achievement;
-    private List<String> qualifications;
-    private List<Experience> workExpeirence;
-    private List<Experience> education;
+    private List<String> achievements = new ArrayList<>();
+    private List<String> qualifications = new ArrayList<>();
+    private List<Experience> workExpeirence = new ArrayList<>();
+    private List<Experience> education = new ArrayList<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -62,5 +62,64 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int compareTo(Resume o) {
         return this.fullName.compareTo(o.getFullName());
+    }
+
+
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public String getPersonal() {
+        return personal;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public List<String> getAchievements() {
+        return achievements;
+    }
+
+    public List<String> getQualifications() {
+        return qualifications;
+    }
+
+    public List<Experience> getWorkExpeirence() {
+        return workExpeirence;
+    }
+
+    public List<Experience> getEducation() {
+        return education;
+    }
+
+
+    public void addContact(Contact contact) {
+        contacts.add(contact);
+    }
+
+    public void setPersonal(String personal) {
+        this.personal = personal;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void addAchievement(String achievement) {
+        achievements.add(achievement);
+    }
+
+    public void addQualifications(String qualification) {
+        qualifications.add(qualification);
+    }
+
+    public void addWorkExpeirence(Experience workExpeirence) {
+        this.workExpeirence.add(workExpeirence);
+    }
+
+    public void addEducation(Experience education) {
+        this.education.add(education);
     }
 }

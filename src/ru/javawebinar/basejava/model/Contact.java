@@ -19,4 +19,18 @@ package ru.javawebinar.basejava.model;
          this.hyperlink = null;
      }
 
-}
+     @Override
+     public boolean equals(Object o) {
+         if (this == o) return true;
+         if (!(o instanceof Contact)) return false;
+
+         Contact contact = (Contact) o;
+
+         return contactInfo.equals(contact.contactInfo);
+     }
+
+     @Override
+     public int hashCode() {
+         return contactInfo.hashCode();
+     }
+ }
