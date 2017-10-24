@@ -6,9 +6,10 @@ import java.util.List;
 /**
  * Created by KuzovleA on 24.10.2017.
  */
-public class Experience implements DataInterface {
+public class Contacts implements DataInterface {
 
-    List<OnePlaceExperience> field = new ArrayList<>();
+    private List<OneContact> contactsList = new ArrayList<>();
+
 
     @Override
     public void addData(Object o) {
