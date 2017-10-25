@@ -15,6 +15,11 @@ public class Resume implements Comparable<Resume> {
 
     private String fullName;
 
+
+    protected SectionType data;
+    protected Contacts contacts;
+
+
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
@@ -56,5 +61,17 @@ public class Resume implements Comparable<Resume> {
     public int compareTo(Resume o) {
         return this.fullName.compareTo(o.getFullName());
     }
+
+
+   public void printAllData() {
+       System.out.println("Fullname: " + fullName);
+       for (Contacts c : Contacts.values()) {
+           System.out.println(c.getType() +"  "+ c.getContact());
+       }
+
+       for (SectionType t : SectionType.values()) {
+           System.out.println(t.getTitle() +"  "+ t.getField());
+       }
+   }
 
 }

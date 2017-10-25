@@ -9,7 +9,7 @@ public class StringData implements DataInterface {
 
     @Override
     public void addData(Object o) {
-
+        field += (String) o;
     }
 
     @Override

@@ -24,6 +24,7 @@ public enum SectionType {
         return field;
     }
 
-
-
+    public void setField(DataInterface field) {
+        this.field = field;
+    }
 }

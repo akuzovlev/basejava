@@ -21,4 +21,12 @@ public enum Contacts {
         this.type = type;
         this.contact = contact;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public OneContact getContact() {
+        return contact;
+    }
 }
