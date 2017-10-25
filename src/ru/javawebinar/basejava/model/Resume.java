@@ -15,10 +15,6 @@ public class Resume implements Comparable<Resume> {
 
     private String fullName;
 
-    private Contacts contacts;
-
-    private List<OneContact> oneContacts = new ArrayList<>();
-
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }

@@ -3,26 +3,22 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by KuzovleA on 24.10.2017.
- */
-public class Contacts implements DataInterface {
 
-    private List<OneContact> contactsList = new ArrayList<>();
+public enum Contacts {
 
+    PHONE("Тел.:", new OneContact()),
+    SKYPE("Skype:", new OneContact()),
+    EMAIL("Почта:", new OneContact()),
+    LINKEDIN("LinkedIn", new OneContact()),
+    GITHUB("GitHub", new OneContact()),
+    STACKOWERFLOW("Stackoverflow", new OneContact()),
+    WEBSITE("Website", new OneContact());
 
-    @Override
-    public void addData(Object o) {
+    private String type;
+    private OneContact contact;
 
-    }
-
-    @Override
-    public Object getData() {
-        return null;
-    }
-
-    @Override
-    public void editData() {
-
+    Contacts(String type, OneContact contact) {
+        this.type = type;
+        this.contact = contact;
     }
 }
