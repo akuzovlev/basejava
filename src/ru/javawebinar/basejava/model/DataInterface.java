@@ -1,12 +1,14 @@
 package ru.javawebinar.basejava.model;
 
-/**
- * Created by KuzovleA on 24.10.2017.
- */
+import java.util.List;
+
+
 public interface DataInterface {
 
-    public void addData(Object o);
-    public Object getData();
-    public void editData();
+    public void addData(List<String> dataList);
+
+    public List<String> getData();
+
+    public void editData(List<String> dataList);
 
 }

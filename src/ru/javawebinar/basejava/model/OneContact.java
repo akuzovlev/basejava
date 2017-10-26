@@ -1,24 +1,29 @@
 package ru.javawebinar.basejava.model;
 
 
- class OneContact {
+import java.util.ArrayList;
+import java.util.List;
 
-     private String contactInfo;
-     private String hyperlink;
+class OneContact {
 
-     public String getContactInfo() {
-         return contactInfo;
-     }
+    private String contactInfo;
+    private String hyperlink;
 
-     public void setContactInfo(String contactInfo) {
-         this.contactInfo = contactInfo;
-     }
 
-     public String getHyperlink() {
-         return hyperlink;
-     }
+    public void addData(String contact, String link) {
+        contactInfo = contact;
+        hyperlink = link;
+    }
 
-     public void setHyperlink(String hyperlink) {
-         this.hyperlink = hyperlink;
-     }
- }
+
+    public List<String> getData() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(contactInfo);
+        list.add(hyperlink);
+        return list;
+    }
+
+    public void editData(List<String> dataList) {
+
+    }
+}

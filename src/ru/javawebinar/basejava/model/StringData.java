@@ -1,24 +1,29 @@
 package ru.javawebinar.basejava.model;
 
-/**
- * Created by KuzovleA on 24.10.2017.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class StringData implements DataInterface {
 
-    String field;
+    private String field;
 
     @Override
-    public void addData(Object o) {
-        field += (String) o;
+    public void addData(List<String> dataList) {
+        field = dataList.get(0);
     }
 
     @Override
-    public Object getData() {
-        return null;
+    public List<String> getData() {
+        ArrayList<String> rez = new ArrayList<String>();
+        rez.add(0, field);
+        return rez;
     }
 
     @Override
-    public void editData() {
+    public void editData(List<String> dataList) {
 
     }
 }
+
+

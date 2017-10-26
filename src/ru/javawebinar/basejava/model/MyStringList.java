@@ -1,29 +1,24 @@
 package ru.javawebinar.basejava.model;
 
-import ru.javawebinar.basejava.storage.ListStorage;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by KuzovleA on 24.10.2017.
- */
 public class MyStringList implements DataInterface {
 
-    List<String> field = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
 
     @Override
-    public void addData(Object o) {
-
+    public void addData(List<String> dataList) {
+        data.addAll(dataList);
     }
 
     @Override
-    public Object getData() {
-        return null;
+    public List<String> getData() {
+        return new ArrayList<String>(data);
     }
 
     @Override
-    public void editData() {
+    public void editData(List<String> dataList) {
 
     }
 }

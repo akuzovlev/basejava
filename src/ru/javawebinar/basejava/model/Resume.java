@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,12 +11,16 @@ public class Resume implements Comparable<Resume> {
 
     // Unique identifier
     private final String uuid;
-
     private String fullName;
 
+    private DataInterface personal = new StringData();
+    private DataInterface objective = new StringData();
+    private DataInterface achievement = new MyStringList();
+    private DataInterface qualification = new MyStringList();
+    private DataInterface expierence = new Experience();
+    private DataInterface education = new Experience();
 
-    protected SectionType data;
-    protected Contacts contacts;
+    private Contacts contacts = new Contacts();
 
 
     public Resume(String fullName) {
@@ -62,16 +65,43 @@ public class Resume implements Comparable<Resume> {
         return this.fullName.compareTo(o.getFullName());
     }
 
+    //------------------------------------------------------------------------
 
-   public void printAllData() {
-       System.out.println("Fullname: " + fullName);
-       for (Contacts c : Contacts.values()) {
-           System.out.println(c.getType() +"  "+ c.getContact());
-       }
 
-       for (SectionType t : SectionType.values()) {
-           System.out.println(t.getTitle() +"  "+ t.getField());
-       }
-   }
+    public DataInterface getFieldBySection(SectionType t) {
+        switch (t) {
+            case PERSONAL:
+                return personal;
+            case OBJECTIVE:
+                return objective;
+            case ACHIEVEMENT:
+                return achievement;
+            case QUALIFICATIONS:
+                return qualification;
+            case EXPERIENCE:
+                return expierence;
+            case EDUCATION:
+                return education;
+            default:
+                throw new RuntimeException("SectionType Error");
+
+        }
+    }
+
+    public void addData(List<String> data, SectionType t) {
+        getFieldBySection(t).addData(data);
+    }
+
+    public List<String> getData(SectionType t) {
+        return getFieldBySection(t).getData();
+    }
+
+    public void addContact(String contact, String link, ContactsFields f) {
+        contacts.addData(contact, link, f);
+    }
+
+    public List<String> getContact(ContactsFields f) {
+        return contacts.getContact(f);
+    }
 
 }
