@@ -23,7 +23,7 @@ class OneContact {
         return list;
     }
 
-    public void editData(List<String> dataList) {
+    public void editData(String contact, String link) {
 
     }
 }
