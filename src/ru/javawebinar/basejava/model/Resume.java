@@ -88,11 +88,11 @@ public class Resume implements Comparable<Resume> {
         }
     }
 
-    public void addData(List<String> data, SectionType t) {
+    public void addDataToSection(List<String> data, SectionType t) {
         getFieldBySection(t).addData(data);
     }
 
-    public List<String> getData(SectionType t) {
+    public List<String> getDataFromSection(SectionType t) {
         return getFieldBySection(t).getData();
     }
 

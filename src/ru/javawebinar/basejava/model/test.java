@@ -20,7 +20,7 @@ public class test {
 
         for (SectionType t : SectionType.values()) {
 
-            r.addData(list, t);
+            r.addDataToSection(list, t);
 
         }
 
@@ -37,7 +37,7 @@ public class test {
 
         for (SectionType t : SectionType.values()) {
 
-            r2.addData(list, t);
+            r2.addDataToSection(list, t);
 
         }
 
@@ -57,7 +57,7 @@ public class test {
 
 
         for (SectionType t : SectionType.values()) {
-            System.out.println(t.getTitle() + "  " + r.getData(t));
+            System.out.println(t.getTitle() + "  " + r.getDataFromSection(t));
         }
     }
 }
