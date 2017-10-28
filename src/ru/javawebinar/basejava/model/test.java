@@ -14,7 +14,7 @@ public class test {
         List<String> list = new ArrayList<>(Arrays.asList("test1", "test2", "test3", "test4", "test5"));
 
 
-        for (ContactsFields f : ContactsFields.values()) {
+        for (ContactType f : ContactType.values()) {
             r.addContact("contact1", "href1", f);
         }
 
@@ -31,7 +31,7 @@ public class test {
 
         list = new ArrayList<>(Arrays.asList("22test1", "22test2", "22test3", "22test4", "22test5"));
 
-        for (ContactsFields f : ContactsFields.values()) {
+        for (ContactType f : ContactType.values()) {
             r2.addContact("2222contact1", "22222href1", f);
         }
 
@@ -51,7 +51,7 @@ public class test {
     public static void printAllData(Resume r) {
         System.out.println("Fullname: " + r.getFullName());
 
-        for (ContactsFields f : ContactsFields.values()) {
+        for (ContactType f : ContactType.values()) {
             System.out.println(f.getTitle() + "  " + r.getContact(f));
         }
 

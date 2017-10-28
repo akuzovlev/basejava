@@ -4,7 +4,7 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-class OneContact {
+class Contact {
 
     private String contactInfo;
     private String hyperlink;

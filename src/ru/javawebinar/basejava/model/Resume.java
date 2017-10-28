@@ -1,6 +1,8 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -12,16 +14,8 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private String fullName;
-
-    private DataInterface personal = new StringData();
-    private DataInterface objective = new StringData();
-    private DataInterface achievement = new MyStringList();
-    private DataInterface qualification = new MyStringList();
-    private DataInterface expierence = new Experience();
-    private DataInterface education = new Experience();
-
-    private Contacts contacts = new Contacts();
-
+    private Map<SectionType,DataInterface> sections = new HashMap<>();
+    private Map<ContactType,Contact> contacts = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -30,6 +24,15 @@ public class Resume implements Comparable<Resume> {
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
+        sections.put(SectionType.PERSONAL, new StringData());
+        sections.put(SectionType.OBJECTIVE, new StringData());
+        sections.put(SectionType.ACHIEVEMENT, new MyStringList());
+        sections.put(SectionType.QUALIFICATIONS, new MyStringList());
+        sections.put(SectionType.EXPERIENCE, new Experience());
+        sections.put(SectionType.EDUCATION, new Experience());
+        for (ContactType t : ContactType.values()) {
+            contacts.put(t,new Contact());
+        }
     }
 
     public String getUuid() {
@@ -44,9 +47,7 @@ public class Resume implements Comparable<Resume> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Resume resume = (Resume) o;
-
         return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
     }
 
@@ -68,40 +69,20 @@ public class Resume implements Comparable<Resume> {
     //------------------------------------------------------------------------
 
 
-    public DataInterface getFieldBySection(SectionType t) {
-        switch (t) {
-            case PERSONAL:
-                return personal;
-            case OBJECTIVE:
-                return objective;
-            case ACHIEVEMENT:
-                return achievement;
-            case QUALIFICATIONS:
-                return qualification;
-            case EXPERIENCE:
-                return expierence;
-            case EDUCATION:
-                return education;
-            default:
-                throw new RuntimeException("SectionType Error");
-
-        }
-    }
-
     public void addDataToSection(List<String> data, SectionType t) {
-        getFieldBySection(t).addData(data);
+        sections.get(t).addData(data);
     }
 
     public List<String> getDataFromSection(SectionType t) {
-        return getFieldBySection(t).getData();
+        return sections.get(t).getData();
     }
 
-    public void addContact(String contact, String link, ContactsFields f) {
-        contacts.addData(contact, link, f);
+    public void addContact(String contact, String link, ContactType t) {
+        contacts.get(t).addData(contact,link);
     }
 
-    public List<String> getContact(ContactsFields f) {
-        return contacts.getContact(f);
+    public List<String> getContact(ContactType f) {
+        return contacts.get(f).getData();
     }
 
 }
