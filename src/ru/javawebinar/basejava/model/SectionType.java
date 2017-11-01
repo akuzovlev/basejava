@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.model;
 
+
 public enum SectionType {
     PERSONAL("Личные качества"),
     OBJECTIVE("Позиция"),
@@ -17,5 +18,4 @@ public enum SectionType {
     public String getTitle() {
         return title;
     }
-
 }
