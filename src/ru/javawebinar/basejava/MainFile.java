@@ -21,7 +21,7 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        File dir = new File("D:\\basejava\\");
+        File dir = new File("./");
         printFileName(dir);
 
         String[] list = dir.list();
@@ -44,7 +44,7 @@ public class MainFile {
         for (File file : fileList) {
             if (file.isDirectory()) {
                 printFileName(file);
-            } else {
+            } else if (file.isFile()) {
                 System.out.println(file.getName());
             }
         }
