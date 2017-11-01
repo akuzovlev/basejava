@@ -9,6 +9,8 @@ import java.io.IOException;
  * 21.07.2016
  */
 public class MainFile {
+
+
     public static void main(String[] args) {
         String filePath = ".\\.gitignore";
 
@@ -19,8 +21,9 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        File dir = new File("./src/ru/javawebinar/basejava");
-        System.out.println(dir.isDirectory());
+        File dir = new File("D:\\basejava\\");
+        printFileName(dir);
+
         String[] list = dir.list();
         if (list != null) {
             for (String name : list) {
@@ -32,6 +35,18 @@ public class MainFile {
             System.out.println(fis.read());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void printFileName(File rootDir) {
+        File[] fileList = rootDir.listFiles();
+        if (fileList != null)
+        for (File file : fileList) {
+            if (file.isDirectory()) {
+                printFileName(file);
+            } else {
+                System.out.println(file.getName());
+            }
         }
     }
 }

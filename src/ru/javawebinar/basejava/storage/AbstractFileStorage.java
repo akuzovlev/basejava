@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,12 +29,16 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-
+        for (File file : directory.listFiles()) {
+            if (!file.delete()) {
+                throw new StorageException(file.toString(), "File can't be deleted");
+            }
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return directory.list().length;
     }
 
     @Override
@@ -43,7 +48,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doUpdate(Resume r, File file) {
-
+        try {
+            doWrite(r, file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
     @Override
@@ -65,16 +74,24 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        return null;
+        return doRead(file);
     }
+
+    protected abstract Resume doRead(File file);
 
     @Override
     protected void doDelete(File file) {
-
+        if (!file.delete()) {
+            throw new StorageException(file.toString(), "File can't be deleted");
+        }
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        return null;
+        List<Resume> result = new ArrayList<>();
+        for (File file : directory.listFiles()) {
+            result.add(doRead(file));
+        }
+        return result;
     }
 }

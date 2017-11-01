@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -8,14 +9,14 @@ import java.util.Objects;
  * 19.07.2016
  */
 public class OrganizationSection extends Section {
-    private final List<Organization> organizations;
+    private final Map<Link,List<Organization>> organizations;
 
-    public OrganizationSection(List<Organization> organizations) {
+    public OrganizationSection(Map<Link,List<Organization>> organizations) {
         Objects.requireNonNull(organizations, "organizations must not be null");
         this.organizations = organizations;
     }
 
-    public List<Organization> getOrganizations() {
+    public Map<Link,List<Organization>> getOrganizations() {
         return organizations;
     }
 
