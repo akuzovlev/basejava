@@ -1,12 +1,13 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
-/**
- * com.urise.webapp.model.Resume class
- */
-public class Resume implements Comparable<Resume> {
-
+public class Resume implements Comparable<Resume>, Serializable {
+    private static final long serialVersionUID = 1L;
     // Unique identifier
     private final String uuid;
 
@@ -38,12 +39,12 @@ public class Resume implements Comparable<Resume> {
         return sections.get(type);
     }
 
-    public void addContact(ContactType type, String string){
-        contacts.put(type,string);
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
-    public void addSection(SectionType type, Section section){
-        sections.put(type,section);
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
     }
 
     @Override
