@@ -33,19 +33,18 @@ public abstract class AbstractStorageTest {
     private static final OnePeriod ONE_PERIOD_2 =
             new OnePeriod(LocalDate.of(2015, 3, 3), LocalDate.of(2016, 4, 4), "junior Айтишник", "Работа, работа");
 
-    private static final  ArrayList<OnePeriod> PERIOD_LIST_1 = new ArrayList<>(Arrays.asList(ONE_PERIOD_1));
-    private static final  ArrayList<OnePeriod> PERIOD_LIST_2 = new ArrayList<>(Arrays.asList(ONE_PERIOD_2));
-    private static final  Organization ORGANIZATION_1 = new Organization(new Link("111", "ccskrf"),PERIOD_LIST_1);
-    private static final  Organization ORGANIZATION_2 = new Organization(new Link("222", "ffg"),PERIOD_LIST_2);
-
+    private static final ArrayList<OnePeriod> PERIOD_LIST_1 = new ArrayList<>(Arrays.asList(ONE_PERIOD_1));
+    private static final ArrayList<OnePeriod> PERIOD_LIST_2 = new ArrayList<>(Arrays.asList(ONE_PERIOD_2));
+    private static final Organization ORGANIZATION_1 = new Organization(new Link("111", "ccskrf"), PERIOD_LIST_1);
+    private static final Organization ORGANIZATION_2 = new Organization(new Link("222", "ffg"), PERIOD_LIST_2);
 
 
     private static final OnePeriod ONE_PERIOD_3 = new OnePeriod(LocalDate.of(2012, 1, 1), LocalDate.of(2013, 2, 2), "Аспирант", "");
     private static final OnePeriod ONE_PERIOD_4 = new OnePeriod(LocalDate.of(2010, 3, 3), LocalDate.of(2011, 4, 4), "студент", "");
-    private static final  ArrayList<OnePeriod> PERIOD_LIST_3 = new ArrayList<>(Arrays.asList(ONE_PERIOD_3));
-    private static final  ArrayList<OnePeriod> PERIOD_LIST_4 = new ArrayList<>(Arrays.asList(ONE_PERIOD_4));
-    private static final  Organization EDUCATION_1 = new Organization(new Link("111", ""),PERIOD_LIST_3);
-    private static final  Organization EDUCATION_2 = new Organization(new Link("222", "hjhg"),PERIOD_LIST_4);
+    private static final ArrayList<OnePeriod> PERIOD_LIST_3 = new ArrayList<>(Arrays.asList(ONE_PERIOD_3));
+    private static final ArrayList<OnePeriod> PERIOD_LIST_4 = new ArrayList<>(Arrays.asList(ONE_PERIOD_4));
+    private static final Organization EDUCATION_1 = new Organization(new Link("111", ""), PERIOD_LIST_3);
+    private static final Organization EDUCATION_2 = new Organization(new Link("222", "hjhg"), PERIOD_LIST_4);
 
     static {
 
@@ -56,8 +55,8 @@ public abstract class AbstractStorageTest {
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Самый главный айтишник"));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, ACHIEVEMENT);
         RESUME_1.addSection(SectionType.QUALIFICATIONS, QUALIFICATIONS);
-        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(new ArrayList<Organization>(Arrays.asList(ORGANIZATION_1,ORGANIZATION_2))));
-        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(new ArrayList<Organization>(Arrays.asList(EDUCATION_1,EDUCATION_2))));
+        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(new ArrayList<Organization>(Arrays.asList(ORGANIZATION_1, ORGANIZATION_2))));
+        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(new ArrayList<Organization>(Arrays.asList(EDUCATION_1, EDUCATION_2))));
 
         RESUME_2 = new Resume(UUID_2, "Name2");
         RESUME_3 = new Resume(UUID_3, "Name3");

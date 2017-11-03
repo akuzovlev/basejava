@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,11 +32,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public void clear() {
             File[] files = directory.listFiles();
             if (files != null) {
-            for (File file : files) {
-                if (!file.delete()) {
+                Arrays.stream(files).forEach(file ->
+                {if (!file.delete()) {
                     throw new StorageException(file.toString(), "File can't be deleted");
-                }
-            }
+                }});
         }
     }
 
@@ -100,9 +100,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         if (files == null) {
             throw new StorageException("Read error","");
         } else {
-            for (File file : files) {
-                result.add(doRead(file));
-            }
+            Arrays.stream(files).forEach(file -> result.add(doRead(file)));
             return result;
         }
     }

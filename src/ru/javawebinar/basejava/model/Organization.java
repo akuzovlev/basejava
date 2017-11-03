@@ -9,8 +9,8 @@ public class Organization {
     private final List<OnePeriod> organization;
 
     public Organization(Link link, List<OnePeriod> organization) {
-        Objects.requireNonNull(link,"link must not be null");
-        Objects.requireNonNull(organization,"organization must not be null");
+        Objects.requireNonNull(link, "link must not be null");
+        Objects.requireNonNull(organization, "organization must not be null");
         this.link = link;
         this.organization = organization;
     }
