@@ -9,14 +9,14 @@ import java.util.Objects;
  * 19.07.2016
  */
 public class OrganizationSection extends Section {
-    private final Map<Link,List<Organization>> organizations;
+    private final List<Organization> organizations;
 
-    public OrganizationSection(Map<Link,List<Organization>> organizations) {
+    public OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations, "organizations must not be null");
         this.organizations = organizations;
     }
 
-    public Map<Link,List<Organization>> getOrganizations() {
+    public List<Organization> getOrganizations() {
         return organizations;
     }
 

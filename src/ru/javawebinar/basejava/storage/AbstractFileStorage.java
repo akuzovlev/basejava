@@ -29,16 +29,23 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File file : directory.listFiles()) {
-            if (!file.delete()) {
-                throw new StorageException(file.toString(), "File can't be deleted");
+            File[] files = directory.listFiles();
+            if (files != null) {
+            for (File file : files) {
+                if (!file.delete()) {
+                    throw new StorageException(file.toString(), "File can't be deleted");
+                }
             }
         }
     }
 
     @Override
     public int size() {
-        return directory.list().length;
+        String[] list = directory.list();
+        if (list == null) {
+            throw new StorageException("Read error", "");
+        }
+        return list.length;
     }
 
     @Override
@@ -89,9 +96,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> doCopyAll() {
         List<Resume> result = new ArrayList<>();
-        for (File file : directory.listFiles()) {
-            result.add(doRead(file));
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Read error","");
+        } else {
+            for (File file : files) {
+                result.add(doRead(file));
+            }
+            return result;
         }
-        return result;
     }
 }

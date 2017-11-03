@@ -1,59 +1,35 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.LocalDate;
+
+import java.util.List;
 import java.util.Objects;
 
-/**
- * gkislin
- * 19.07.2016
- */
 public class Organization {
+    private final Link link;
+    private final List<OnePeriod> organization;
 
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
-
-    public Organization(LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate, "startDate must not be null");
-        Objects.requireNonNull(endDate, "endDate must not be null");
-        Objects.requireNonNull(title, "title must not be null");
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+    public Organization(Link link, List<OnePeriod> organization) {
+        Objects.requireNonNull(link,"link must not be null");
+        Objects.requireNonNull(organization,"organization must not be null");
+        this.link = link;
+        this.organization = organization;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Organization)) return false;
 
         Organization that = (Organization) o;
 
-        if (!startDate.equals(that.startDate)) return false;
-        if (!endDate.equals(that.endDate)) return false;
-        if (!title.equals(that.title)) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
-
+        if (link != null ? !link.equals(that.link) : that.link != null) return false;
+        return organization != null ? organization.equals(that.organization) : that.organization == null;
     }
 
     @Override
     public int hashCode() {
-        int result = startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = link != null ? link.hashCode() : 0;
+        result = 31 * result + (organization != null ? organization.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Organization{" +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
     }
 }
