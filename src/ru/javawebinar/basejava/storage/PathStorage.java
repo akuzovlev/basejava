@@ -11,14 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
+    private Strategy strategy;
 
-    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
 
-    protected abstract Resume doRead(InputStream is) throws IOException;
-
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir, Strategy strategy) {
+        this.strategy = strategy;
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -66,9 +65,9 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doSave(Resume r, Path path) {
         try {
-           Files.createFile(path);
+            Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create file " , path.getFileName().toString(), e);
+            throw new StorageException("Couldn't create file ", path.getFileName().toString(), e);
         }
         doUpdate(r, path);
     }
@@ -97,9 +96,17 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             Files.list(directory).forEach(resume -> rezult.add(doGet(resume)));
             return rezult;
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new StorageException("Directory read error", null);
         }
-
     }
+
+    protected void doWrite(Resume r, OutputStream os) throws IOException {
+        strategy.doWrite(r, os);
+    }
+
+    protected Resume doRead(InputStream is) throws IOException {
+        return strategy.doRead(is);
+    }
+
 }
