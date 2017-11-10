@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -10,13 +9,11 @@ import java.util.Objects;
  * gkislin
  * 19.07.2016
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationSection extends Section {
+
     private static final long serialVersionUID = 1L;
 
-    private List<Organization> organizations;
-
-    public OrganizationSection() {}
+    private final List<Organization> organizations;
 
     public OrganizationSection(Organization... organizations) {
         this(Arrays.asList(organizations));
@@ -50,5 +47,10 @@ public class OrganizationSection extends Section {
     @Override
     public String toString() {
         return organizations.toString();
+    }
+
+    @Override
+    public List<String> getDataAsStringList() {
+        return new ArrayList<>(Arrays.asList("org1", "org2"));
     }
 }

@@ -51,7 +51,7 @@ public class Organization implements Serializable {
 
     @Override
     public String toString() {
-        return "Organization(" + homePage + "," + positions + ')';
+        return "" + homePage + " " + positions;
     }
 
     /**
@@ -122,7 +122,7 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            return "Position(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
+            return "" + startDate + ',' + endDate + ',' + title + ',' + description;
         }
     }
 }

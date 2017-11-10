@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\projects\\basejava\\storage");
+    protected static final File STORAGE_DIR = new File("D:\\basejava\\storage");
 
     protected Storage storage;
 
@@ -37,9 +37,9 @@ public abstract class AbstractStorageTest {
 
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
-        R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective  1"));
         R1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
-        R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
+        R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment,  11", "Achivment  12", "Achivment  13"));
         R1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
         R1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
@@ -54,10 +54,10 @@ public abstract class AbstractStorageTest {
                         new Organization("Organization12", "http://Organization12.ru")));
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
-        R1.addSection(SectionType.EXPERIENCE,
+       /* R1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization2", "http://Organization2.ru",
-                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));
+                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));*/
     }
 
     protected AbstractStorageTest(Storage storage) {

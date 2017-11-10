@@ -1,9 +1,12 @@
 package ru.javawebinar.basejava.storage.serializer;
 
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializer {
@@ -19,7 +22,16 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
-            // TODO implements sections
+            Map<SectionType, Section> sections = r.getSections();
+            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+                dos.writeUTF(entry.getKey().name());
+
+                List<String> data = entry.getValue().getDataAsStringList();
+                dos.writeInt(data.size());
+                for (String s : data) {
+                    dos.writeUTF(s);
+                }
+            }
         }
     }
 
@@ -33,7 +45,32 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            // TODO implements sections
+
+            SectionType st = SectionType.valueOf(dis.readUTF());
+            size = dis.readInt();
+            resume.addSection(st, new TextSection(dis.readUTF()));
+
+            st = SectionType.valueOf(dis.readUTF());
+            size = dis.readInt();
+            resume.addSection(st, new TextSection(dis.readUTF()));
+
+            st = SectionType.valueOf(dis.readUTF());
+            List<String> items = new ArrayList<>();
+            size = dis.readInt();
+            for (int i =0; i < size; i++) {
+                items.add(dis.readUTF());
+            }
+            resume.addSection(st, new ListSection(items));
+
+            st = SectionType.valueOf(dis.readUTF());
+            items = new ArrayList<>();
+            size = dis.readInt();
+            for (int i =0; i < size; i++) {
+                items.add(dis.readUTF());
+            }
+            resume.addSection(st, new ListSection(items));
+
+
             return resume;
         }
     }

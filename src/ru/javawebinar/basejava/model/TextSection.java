@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.Objects;
+import java.util.*;
 
 public class TextSection extends Section {
 
@@ -39,5 +39,10 @@ public class TextSection extends Section {
     @Override
     public int hashCode() {
         return content.hashCode();
+    }
+
+    @Override
+    public List<String> getDataAsStringList() {
+        return Collections.singletonList(content);
     }
 }

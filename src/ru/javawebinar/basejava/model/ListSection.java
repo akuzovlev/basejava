@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -49,5 +50,10 @@ public class ListSection extends Section {
     @Override
     public int hashCode() {
         return items.hashCode();
+    }
+
+    @Override
+    public List<String> getDataAsStringList() {
+        return new ArrayList<>(items);
     }
 }
