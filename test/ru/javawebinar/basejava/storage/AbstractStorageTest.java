@@ -128,6 +128,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
+        Resume ser = storage.get(UUID_1);
+        Resume obr = R1;
+
         assertGet(R1);
         assertGet(R2);
         assertGet(R3);
