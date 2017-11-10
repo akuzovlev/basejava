@@ -13,7 +13,10 @@ public class OrganizationSection extends Section {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<Organization> organizations;
+    private List<Organization> organizations;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(Organization... organizations) {
         this(Arrays.asList(organizations));
@@ -51,6 +54,19 @@ public class OrganizationSection extends Section {
 
     @Override
     public List<String> getDataAsStringList() {
-        return new ArrayList<>(Arrays.asList("org1", "org2"));
+        List<String> result = new ArrayList<>();
+        result.add(Integer.toString(organizations.size()));
+        for (Organization org : organizations) {
+            result.add(org.getHomePage().getName());
+            result.add(org.getHomePage().getUrl());
+            result.add(Integer.toString(org.getPositions().size()));
+            for (Organization.Position position : org.getPositions()) {
+                result.add(position.getStartDate().toString());
+                result.add(position.getEndDate().toString());
+                result.add(position.getTitle());
+                result.add(position.getDescription());
+            }
+        }
+        return result;
     }
 }

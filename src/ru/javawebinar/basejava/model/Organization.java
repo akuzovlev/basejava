@@ -54,6 +54,14 @@ public class Organization implements Serializable {
         return "" + homePage + " " + positions;
     }
 
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
     /**
      * gkislin
      * 28.07.2016
