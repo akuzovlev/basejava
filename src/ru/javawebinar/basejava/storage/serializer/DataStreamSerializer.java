@@ -23,6 +23,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getValue());
             }
             Map<SectionType, Section> sections = r.getSections();
+            dos.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
 
@@ -49,29 +50,33 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-                SectionType st = SectionType.valueOf(dis.readUTF());
-                size = dis.readInt();
-                resume.addSection(st, new TextSection(dis.readUTF()));
+            size = dis.readInt();
+            if (size == 0) {
+                return resume;
+            }
+            SectionType st = SectionType.valueOf(dis.readUTF());
+            size = dis.readInt();
+            resume.addSection(st, new TextSection(dis.readUTF()));
 
-                st = SectionType.valueOf(dis.readUTF());
-                size = dis.readInt();
-                resume.addSection(st, new TextSection(dis.readUTF()));
+            st = SectionType.valueOf(dis.readUTF());
+            size = dis.readInt();
+            resume.addSection(st, new TextSection(dis.readUTF()));
 
-                st = SectionType.valueOf(dis.readUTF());
-                List<String> items = new ArrayList<>();
-                size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    items.add(dis.readUTF());
-                }
-                resume.addSection(st, new ListSection(items));
+            st = SectionType.valueOf(dis.readUTF());
+            List<String> items = new ArrayList<>();
+            size = dis.readInt();
+            for (int i = 0; i < size; i++) {
+                items.add(dis.readUTF());
+            }
+            resume.addSection(st, new ListSection(items));
 
-                st = SectionType.valueOf(dis.readUTF());
-                items = new ArrayList<>();
-                size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    items.add(dis.readUTF());
-                }
-                resume.addSection(st, new ListSection(items));
+            st = SectionType.valueOf(dis.readUTF());
+            items = new ArrayList<>();
+            size = dis.readInt();
+            for (int i = 0; i < size; i++) {
+                items.add(dis.readUTF());
+            }
+            resume.addSection(st, new ListSection(items));
 
             st = SectionType.valueOf(dis.readUTF());
             size = dis.readInt();
@@ -82,9 +87,9 @@ public class DataStreamSerializer implements StreamSerializer {
                 int positionsSize = Integer.parseInt(dis.readUTF());
                 List<Organization.Position> positions = new ArrayList<>();
                 for (int j = 0; j < positionsSize; j++) {
-                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()),LocalDate.parse(dis.readUTF()),dis.readUTF(),dis.readUTF()));
+                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()), LocalDate.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()));
                 }
-                organizations.add(new Organization(link,positions));
+                organizations.add(new Organization(link, positions));
             }
             resume.addSection(st, new OrganizationSection(organizations));
 
@@ -98,9 +103,9 @@ public class DataStreamSerializer implements StreamSerializer {
                 int positionsSize = Integer.parseInt(dis.readUTF());
                 List<Organization.Position> positions = new ArrayList<>();
                 for (int j = 0; j < positionsSize; j++) {
-                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()),LocalDate.parse(dis.readUTF()),dis.readUTF(),dis.readUTF()));
+                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()), LocalDate.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()));
                 }
-                organizations.add(new Organization(link,positions));
+                organizations.add(new Organization(link, positions));
             }
             resume.addSection(st, new OrganizationSection(organizations));
 
