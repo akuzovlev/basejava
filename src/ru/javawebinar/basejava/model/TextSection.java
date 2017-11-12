@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -46,6 +45,6 @@ public class TextSection extends Section {
 
     @Override
     public void write(DataOutputStream dos) throws IOException {
-            dos.writeUTF(content);
+        dos.writeUTF(content);
     }
 }

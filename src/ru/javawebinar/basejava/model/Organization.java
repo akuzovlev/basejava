@@ -66,7 +66,7 @@ public class Organization implements Serializable {
 
     public void write(DataOutputStream dos) throws IOException {
 
-        if (homePage.getUrl()!= null) {
+        if (homePage.getUrl() != null) {
             dos.writeBoolean(true);
             dos.writeUTF(homePage.getName());
             dos.writeUTF(homePage.getUrl());
@@ -76,9 +76,9 @@ public class Organization implements Serializable {
         }
 
         dos.writeInt(positions.size());
-        for (int i = 0; i < positions.size(); i++){
+        for (int i = 0; i < positions.size(); i++) {
 
-            if (positions.get(i).description!= null) {
+            if (positions.get(i).description != null) {
                 dos.writeBoolean(true);
                 dos.writeUTF(positions.get(i).startDate.toString());
                 dos.writeUTF(positions.get(i).endDate.toString());
