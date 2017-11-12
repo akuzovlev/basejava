@@ -26,16 +26,7 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
-
-                List<String> data = entry.getValue().getDataAsStringList();
-                dos.writeInt(data.size());
-                for (String s : data) {
-                    if (s == null) {
-                        dos.writeUTF("null");
-                    } else {
-                        dos.writeUTF(s);
-                    }
-                }
+                entry.getValue().write(dos);
             }
         }
     }
@@ -51,75 +42,71 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             size = dis.readInt();
+            Map<SectionType, Section> sections = null;
             if (size == 0) {
                 return resume;
             }
-                SectionType st = SectionType.valueOf(dis.readUTF());
-                size = dis.readInt();
-                resume.addSection(st, new TextSection(dis.readUTF()));
 
-                st = SectionType.valueOf(dis.readUTF());
-                size = dis.readInt();
-                resume.addSection(st, new TextSection(dis.readUTF()));
-
-                st = SectionType.valueOf(dis.readUTF());
-                List<String> items = new ArrayList<>();
-                size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    items.add(dis.readUTF());
-                }
-                resume.addSection(st, new ListSection(items));
-
-                st = SectionType.valueOf(dis.readUTF());
-                items = new ArrayList<>();
-                size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    items.add(dis.readUTF());
-                }
-                resume.addSection(st, new ListSection(items));
-
-
-
+            SectionType st = SectionType.valueOf(dis.readUTF());
+            resume.addSection(st, readTextSection(dis));
 
             st = SectionType.valueOf(dis.readUTF());
-            size = dis.readInt();
-            size = Integer.parseInt(dis.readUTF());
-            List<Organization> organizations = new ArrayList<>();
-            String s = null;
-            for (int i = 0; i < size; i++) {
-                String name = dis.readUTF();
-                String url = dis.readUTF();
-                Link link = new Link(name, url.equals("null") ? null : url);
-                int positionsSize = Integer.parseInt(dis.readUTF());
-                List<Organization.Position> positions = new ArrayList<>();
-                if (positionsSize != 0) {
-                    for (int j = 0; j < positionsSize; j++) {
-                        positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()), LocalDate.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()));
-                    }
-                } else {
-                    positions = null;
-                }
-                organizations.add(new Organization(link,positions));
-            }
-            resume.addSection(st, new OrganizationSection(organizations));
-
+            resume.addSection(st, readTextSection(dis));
 
             st = SectionType.valueOf(dis.readUTF());
-            size = dis.readInt();
-            size = Integer.parseInt(dis.readUTF());
-            organizations = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                Link link = new Link(dis.readUTF(), dis.readUTF());
-                int positionsSize = Integer.parseInt(dis.readUTF());
-                List<Organization.Position> positions = new ArrayList<>();
-                for (int j = 0; j < positionsSize; j++) {
-                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()),LocalDate.parse(dis.readUTF()),dis.readUTF(),dis.readUTF()));
-                }
-                organizations.add(new Organization(link,positions));
-            }
-            resume.addSection(st, new OrganizationSection(organizations));
+            resume.addSection(st, readListSection(dis));
+
+            st = SectionType.valueOf(dis.readUTF());
+            resume.addSection(st, readListSection(dis));
+
+            st = SectionType.valueOf(dis.readUTF());
+            resume.addSection(st, readOrganizationSection(dis));
+
+            st = SectionType.valueOf(dis.readUTF());
+            resume.addSection(st, readOrganizationSection(dis));
 
             return resume;
+
         }
     }
+
+    private TextSection readTextSection(DataInputStream dis) throws IOException {
+        return new TextSection(dis.readUTF());
+    }
+
+    private ListSection readListSection(DataInputStream dis) throws IOException {
+        List<String> items = new ArrayList<>();
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            items.add(dis.readUTF());
+        }
+        return new ListSection(items);
+    }
+
+    private OrganizationSection readOrganizationSection(DataInputStream dis) throws IOException {
+        List<Organization> organizations = new ArrayList<>();
+        int size = dis.readInt();
+        Link link;
+        for (int i = 0; i < size; i++) {
+            if (dis.readBoolean()) {
+                link = new Link(dis.readUTF(),dis.readUTF());
+            } else {
+                link = new Link(dis.readUTF(),null);
+            }
+            int posSize = dis.readInt();
+            List<Organization.Position> positions = new ArrayList<>();
+            for (int j = 0; j < posSize; j++) {
+                if (dis.readBoolean()) {
+                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()),LocalDate.parse(dis.readUTF()),dis.readUTF(),dis.readUTF()));
+                }else {
+                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()),LocalDate.parse(dis.readUTF()),dis.readUTF(),null));
+                }
+            }
+            organizations.add(new Organization(link,positions));
+
+        }
+
+        return new OrganizationSection(organizations);
+    }
+
 }

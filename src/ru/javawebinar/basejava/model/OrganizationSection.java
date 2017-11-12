@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,20 +56,10 @@ public class OrganizationSection extends Section {
     }
 
     @Override
-    public List<String> getDataAsStringList() {
-        List<String> result = new ArrayList<>();
-        result.add(Integer.toString(organizations.size()));
+    public void write(DataOutputStream dos) throws IOException {
+        dos.writeInt(organizations.size());
         for (Organization org : organizations) {
-            result.add(org.getHomePage().getName());
-            result.add(org.getHomePage().getUrl());
-            result.add(Integer.toString(org.getPositions().size()));
-            for (Organization.Position position : org.getPositions()) {
-                result.add(position.getStartDate().toString());
-                result.add(position.getEndDate().toString());
-                result.add(position.getTitle());
-                result.add(position.getDescription());
-            }
+            org.write(dos);
         }
-        return result;
     }
 }
