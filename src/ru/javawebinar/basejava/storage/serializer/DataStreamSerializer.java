@@ -44,23 +44,37 @@ public class DataStreamSerializer implements StreamSerializer {
             if (size == 0) {
                 return resume;
             }
-            addTextSection(resume, dis);
-            addTextSection(resume, dis);
-            addListSection(resume, dis);
-            addListSection(resume, dis);
-            addOrganizationSection(resume, dis);
-            addOrganizationSection(resume, dis);
+            for (int i = 0; i < size; i++) {
+                addSection(resume, dis);
+            }
             return resume;
         }
     }
 
-    private void addTextSection(Resume r, DataInputStream dis) throws IOException {
+    private void addSection(Resume r, DataInputStream dis) throws IOException {
         SectionType st = SectionType.valueOf(dis.readUTF());
+        String sectionClass = dis.readUTF();
+        switch (sectionClass) {
+            case "TextSection":
+                addTextSection(r, dis, st);
+                break;
+            case "ListSection":
+                addListSection(r, dis, st);
+                break;
+            case "OrganizationSection":
+                addOrganizationSection(r, dis, st);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void addTextSection(Resume r, DataInputStream dis, SectionType st) throws IOException {
         r.addSection(st, new TextSection(dis.readUTF()));
     }
 
-    private void addListSection(Resume r, DataInputStream dis) throws IOException {
-        SectionType st = SectionType.valueOf(dis.readUTF());
+    private void addListSection(Resume r, DataInputStream dis, SectionType st) throws IOException {
         List<String> items = new ArrayList<>();
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
@@ -69,8 +83,7 @@ public class DataStreamSerializer implements StreamSerializer {
         r.addSection(st, new ListSection(items));
     }
 
-    private void addOrganizationSection(Resume r, DataInputStream dis) throws IOException {
-        SectionType st = SectionType.valueOf(dis.readUTF());
+    private void addOrganizationSection(Resume r, DataInputStream dis, SectionType st) throws IOException {
         List<Organization> organizations = new ArrayList<>();
         int size = dis.readInt();
         Link link;

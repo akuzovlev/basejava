@@ -56,6 +56,7 @@ public class ListSection extends Section {
 
     @Override
     public void write(DataOutputStream dos) throws IOException {
+        dos.writeUTF("ListSection");
         dos.writeInt(items.size());
         for (String s : items) {
             dos.writeUTF(s);

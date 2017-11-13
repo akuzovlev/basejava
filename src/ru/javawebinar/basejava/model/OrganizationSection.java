@@ -55,6 +55,7 @@ public class OrganizationSection extends Section {
 
     @Override
     public void write(DataOutputStream dos) throws IOException {
+        dos.writeUTF("OrganizationSection");
         dos.writeInt(organizations.size());
         for (Organization org : organizations) {
             org.write(dos);

@@ -45,6 +45,7 @@ public class TextSection extends Section {
 
     @Override
     public void write(DataOutputStream dos) throws IOException {
+        dos.writeUTF("TextSection");
         dos.writeUTF(content);
     }
 }
