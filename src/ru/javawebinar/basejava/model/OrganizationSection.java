@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -53,12 +51,4 @@ public class OrganizationSection extends Section {
         return organizations.toString();
     }
 
-    @Override
-    public void write(DataOutputStream dos) throws IOException {
-        dos.writeUTF("OrganizationSection");
-        dos.writeInt(organizations.size());
-        for (Organization org : organizations) {
-            org.write(dos);
-        }
-    }
 }

@@ -21,11 +21,12 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
+
             Map<SectionType, Section> sections = r.getSections();
             dos.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
-                entry.getValue().write(dos);
+                writeSection(entry, dos);
             }
         }
     }
@@ -51,6 +52,66 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
+    private void writeSection(Map.Entry<SectionType, Section> entry, DataOutputStream dos) throws IOException {
+        SectionType sectionType = entry.getKey();
+        switch (sectionType) {
+            case PERSONAL:
+                writeTextSection(dos, (TextSection) entry.getValue());
+                break;
+            case OBJECTIVE:
+                writeTextSection(dos, (TextSection) entry.getValue());
+                break;
+            case ACHIEVEMENT:
+                writeListSection(dos, (ListSection) entry.getValue());
+                break;
+            case QUALIFICATIONS:
+                writeListSection(dos, (ListSection) entry.getValue());
+                break;
+            case EXPERIENCE:
+                writeOrganizationSection(dos, (OrganizationSection) entry.getValue());
+                break;
+            case EDUCATION:
+                writeOrganizationSection(dos, (OrganizationSection) entry.getValue());
+                break;
+        }
+    }
+
+    private void writeTextSection(DataOutputStream dos, TextSection textSection) throws IOException {
+        dos.writeUTF("TextSection");
+        dos.writeUTF(textSection.getContent());
+    }
+
+    private void writeListSection(DataOutputStream dos, ListSection listSection) throws IOException {
+        dos.writeUTF("ListSection");
+        List<String> items = listSection.getItems();
+        dos.writeInt(items.size());
+        for (String s : items) {
+            dos.writeUTF(s);
+        }
+    }
+
+    private void writeOrganizationSection(DataOutputStream dos, OrganizationSection organizationSection) throws IOException {
+        dos.writeUTF("OrganizationSection");
+        List<Organization> organizations = organizationSection.getOrganizations();
+        dos.writeInt(organizations.size());
+        for (Organization org : organizations) {
+            boolean urlNotNull = (org.getHomePage().getUrl() != null);
+            dos.writeBoolean(urlNotNull);
+            dos.writeUTF(org.getHomePage().getName());
+            if (urlNotNull) dos.writeUTF(org.getHomePage().getUrl());
+            List<Organization.Position> positions = org.getPositions();
+            dos.writeInt(positions.size());
+            for (Organization.Position position : positions) {
+                boolean descriptionNotNull = (position.getDescription() != null);
+                dos.writeBoolean(descriptionNotNull);
+                dos.writeUTF(position.getStartDate().toString());
+                dos.writeUTF(position.getEndDate().toString());
+                dos.writeUTF(position.getTitle());
+                if (descriptionNotNull) dos.writeUTF(position.getDescription());
+            }
+        }
+    }
+
     private void addSection(Resume r, DataInputStream dis) throws IOException {
         SectionType st = SectionType.valueOf(dis.readUTF());
         String sectionClass = dis.readUTF();
@@ -64,11 +125,8 @@ public class DataStreamSerializer implements StreamSerializer {
             case "OrganizationSection":
                 addOrganizationSection(r, dis, st);
                 break;
-            default:
-                break;
         }
     }
-
 
     private void addTextSection(Resume r, DataInputStream dis, SectionType st) throws IOException {
         r.addSection(st, new TextSection(dis.readUTF()));
@@ -106,5 +164,4 @@ public class DataStreamSerializer implements StreamSerializer {
         }
         r.addSection(st, new OrganizationSection(organizations));
     }
-
 }

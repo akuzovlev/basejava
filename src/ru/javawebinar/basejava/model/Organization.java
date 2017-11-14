@@ -5,8 +5,6 @@ import ru.javawebinar.basejava.util.LocalDateAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -64,34 +62,6 @@ public class Organization implements Serializable {
         return positions;
     }
 
-    public void write(DataOutputStream dos) throws IOException {
-
-        if (homePage.getUrl() != null) {
-            dos.writeBoolean(true);
-            dos.writeUTF(homePage.getName());
-            dos.writeUTF(homePage.getUrl());
-        } else {
-            dos.writeBoolean(false);
-            dos.writeUTF(homePage.getName());
-        }
-
-        dos.writeInt(positions.size());
-        for (int i = 0; i < positions.size(); i++) {
-
-            if (positions.get(i).description != null) {
-                dos.writeBoolean(true);
-                dos.writeUTF(positions.get(i).startDate.toString());
-                dos.writeUTF(positions.get(i).endDate.toString());
-                dos.writeUTF(positions.get(i).title);
-                dos.writeUTF(positions.get(i).description);
-            } else {
-                dos.writeBoolean(false);
-                dos.writeUTF(positions.get(i).startDate.toString());
-                dos.writeUTF(positions.get(i).endDate.toString());
-                dos.writeUTF(positions.get(i).title);
-            }
-        }
-    }
 
     /**
      * gkislin

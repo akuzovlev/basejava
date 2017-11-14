@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -53,13 +51,4 @@ public class ListSection extends Section {
         return items.hashCode();
     }
 
-
-    @Override
-    public void write(DataOutputStream dos) throws IOException {
-        dos.writeUTF("ListSection");
-        dos.writeInt(items.size());
-        for (String s : items) {
-            dos.writeUTF(s);
-        }
-    }
 }
