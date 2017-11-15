@@ -56,20 +56,14 @@ public class DataStreamSerializer implements StreamSerializer {
         SectionType sectionType = entry.getKey();
         switch (sectionType) {
             case PERSONAL:
-                writeTextSection(dos, (TextSection) entry.getValue());
-                break;
             case OBJECTIVE:
                 writeTextSection(dos, (TextSection) entry.getValue());
                 break;
             case ACHIEVEMENT:
-                writeListSection(dos, (ListSection) entry.getValue());
-                break;
             case QUALIFICATIONS:
                 writeListSection(dos, (ListSection) entry.getValue());
                 break;
             case EXPERIENCE:
-                writeOrganizationSection(dos, (OrganizationSection) entry.getValue());
-                break;
             case EDUCATION:
                 writeOrganizationSection(dos, (OrganizationSection) entry.getValue());
                 break;
@@ -95,19 +89,17 @@ public class DataStreamSerializer implements StreamSerializer {
         List<Organization> organizations = organizationSection.getOrganizations();
         dos.writeInt(organizations.size());
         for (Organization org : organizations) {
-            boolean urlNotNull = (org.getHomePage().getUrl() != null);
-            dos.writeBoolean(urlNotNull);
             dos.writeUTF(org.getHomePage().getName());
-            if (urlNotNull) dos.writeUTF(org.getHomePage().getUrl());
+            String url = org.getHomePage().getUrl();
+            dos.writeUTF((url != null) ? url : "");
             List<Organization.Position> positions = org.getPositions();
             dos.writeInt(positions.size());
             for (Organization.Position position : positions) {
-                boolean descriptionNotNull = (position.getDescription() != null);
-                dos.writeBoolean(descriptionNotNull);
                 dos.writeUTF(position.getStartDate().toString());
                 dos.writeUTF(position.getEndDate().toString());
                 dos.writeUTF(position.getTitle());
-                if (descriptionNotNull) dos.writeUTF(position.getDescription());
+                String description = position.getDescription();
+                dos.writeUTF((description != null) ? description : "");
             }
         }
     }
@@ -146,19 +138,24 @@ public class DataStreamSerializer implements StreamSerializer {
         int size = dis.readInt();
         Link link;
         for (int i = 0; i < size; i++) {
-            if (dis.readBoolean()) {
-                link = new Link(dis.readUTF(), dis.readUTF());
+
+            String name = dis.readUTF();
+            String url = dis.readUTF();
+            if (url.equals("")) {
+                link = new Link(name, null);
             } else {
-                link = new Link(dis.readUTF(), null);
+                link = new Link(name, url);
             }
+
             int posSize = dis.readInt();
             List<Organization.Position> positions = new ArrayList<>();
             for (int j = 0; j < posSize; j++) {
-                if (dis.readBoolean()) {
-                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()), LocalDate.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()));
-                } else {
-                    positions.add(new Organization.Position(LocalDate.parse(dis.readUTF()), LocalDate.parse(dis.readUTF()), dis.readUTF(), null));
-                }
+                LocalDate startDate = LocalDate.parse(dis.readUTF());
+                LocalDate endDate = LocalDate.parse(dis.readUTF());
+                String title = dis.readUTF();
+                String description = dis.readUTF();
+                if (description.equals("")) description = null;
+                positions.add(new Organization.Position(startDate, endDate, title, description));
             }
             organizations.add(new Organization(link, positions));
         }
