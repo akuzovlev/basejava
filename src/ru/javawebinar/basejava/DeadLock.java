@@ -15,6 +15,7 @@ public class DeadLock {
                     int i = 5;
                     try {
                         method(Thread.currentThread());
+                        System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -30,7 +31,7 @@ public class DeadLock {
 
     }
 
-    synchronized static void method(Thread thread) throws InterruptedException {
+    private synchronized static void method(Thread thread) throws InterruptedException {
         thread.join();
     }
 }
