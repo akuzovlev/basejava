@@ -5,33 +5,53 @@ package ru.javawebinar.basejava;
  */
 public class DeadLock {
 
+    private static final Object o1 = new Object();
+    private static final Object o2 = new Object();
+
     public static void main(String[] args) throws InterruptedException {
 
         Thread thread1 = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                synchronized (this) {
-                    int i = 5;
+                synchronized (o1) {
+                    System.out.println(Thread.currentThread().getName() + " first lock");
+
                     try {
-                        method(Thread.currentThread());
-                        System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    synchronized (o2) {
+                        System.out.println(Thread.currentThread().getName() + " second lock");
+                    }
                 }
+            }
+        });
 
-                System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
+        Thread thread2 = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                synchronized (o2) {
+                    System.out.println(Thread.currentThread().getName() + " first lock");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (o1) {
+                        System.out.println(Thread.currentThread().getName() + " second lock");
+                    }
+                }
             }
         });
 
         thread1.start();
-        thread1.join();
-        System.out.println(thread1.getState());
+        thread2.start();
+
+        System.out.println(thread1.getState() +" "+ thread2.getState());
 
     }
 
-    private synchronized static void method(Thread thread) throws InterruptedException {
-        thread.join();
-    }
 }
