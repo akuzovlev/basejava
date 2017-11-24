@@ -5,16 +5,19 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SqlHelper {
 
-    public static List<Resume> executeHelper(ConnectionFactory connectionFactory, String action, String statement, String... params) {
+    private final ConnectionFactory connectionFactory;
+
+    public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
+        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    }
+
+    public List<Resume> executeHelper(String action, String statement, String... params) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(statement)) {
             if (params != null) {
@@ -28,7 +31,7 @@ public class SqlHelper {
         }
     }
 
-    private static List<Resume> doJob(PreparedStatement ps, String action, String statement, String... params) throws SQLException {
+    private List<Resume> doJob(PreparedStatement ps, String action, String statement, String... params) throws SQLException {
         List<Resume> result = new ArrayList<>();
         switch (action) {
             case "execute":

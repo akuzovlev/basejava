@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -10,25 +11,28 @@ import java.sql.*;
 import java.util.List;
 
 public class SqlStorage implements Storage {
-    private final ConnectionFactory connectionFactory;
+    private final SqlHelper helper;
+    private final String dbUrl = Config.get().getDbUrl();
+    private final String dbUser = Config.get().getDbUser();
+    private final String dbPassword = Config.get().getDbPassword();
 
-    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    public SqlStorage() {
+        this.helper = new SqlHelper(dbUrl,dbUser,dbPassword);
     }
 
     @Override
     public void clear() {
-        SqlHelper.executeHelper(connectionFactory, "execute", "DELETE FROM resume");
+       helper.executeHelper("execute", "DELETE FROM resume");
     }
 
     @Override
     public Resume get(String uuid) {
-        return SqlHelper.executeHelper(connectionFactory, "get", "SELECT * FROM resume r WHERE r.uuid =?", uuid).get(0);
+        return  helper.executeHelper("get", "SELECT * FROM resume r WHERE r.uuid =?", uuid).get(0);
     }
 
     @Override
     public void update(Resume r) {
-        SqlHelper.executeHelper(connectionFactory, "execute", "UPDATE resume SET full_name = ? WHERE uuid = ?", r.getFullName(), r.getUuid());
+        helper.executeHelper( "execute", "UPDATE resume SET full_name = ? WHERE uuid = ?", r.getFullName(), r.getUuid());
     }
 
     @Override
@@ -41,23 +45,23 @@ public class SqlStorage implements Storage {
         if (resume != null) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            SqlHelper.executeHelper(connectionFactory, "execute", "INSERT INTO resume (uuid, full_name) VALUES (?,?)", r.getUuid(), r.getFullName());
+            helper.executeHelper( "execute", "INSERT INTO resume (uuid, full_name) VALUES (?,?)", r.getUuid(), r.getFullName());
         }
     }
 
     @Override
     public void delete(String uuid) {
-        SqlHelper.executeHelper(connectionFactory, "delete", "DELETE FROM resume WHERE uuid=?", uuid);
+        helper.executeHelper( "delete", "DELETE FROM resume WHERE uuid=?", uuid);
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return SqlHelper.executeHelper(connectionFactory, "getAll", "SELECT * FROM resume");
+        return  helper.executeHelper( "getAll", "SELECT * FROM resume");
     }
 
     @Override
     public int size() {
-        return SqlHelper.executeHelper(connectionFactory, "getAll", "SELECT * FROM resume").size();
+        return  helper.executeHelper( "getAll", "SELECT * FROM resume").size();
 
     }
 }
