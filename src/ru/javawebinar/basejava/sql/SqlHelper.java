@@ -1,15 +1,13 @@
-package ru.javawebinar.basejava.util;
+package ru.javawebinar.basejava.sql;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.sql.ConnectionFactory;
-import ru.javawebinar.basejava.storage.ExecuteCode;
 
 import java.sql.*;
 import java.util.List;
 
 
-public class SqlHelper {
+public class SqlHelper <T> {
 
     private final ConnectionFactory connectionFactory;
 
@@ -17,10 +15,10 @@ public class SqlHelper {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
-    public List<Resume> executeHelper(String statement, ExecuteCode excode) {
+    public T executeHelper(String statement, ExecuteCode excode) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(statement)) {
-            return excode.execute(ps);
+            return (T)excode.execute(ps);
         } catch (SQLException e) {
             throw new StorageException(e);
         }
