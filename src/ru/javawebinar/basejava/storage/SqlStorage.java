@@ -29,7 +29,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        Resume rez = (Resume) helper.executeHelper("SELECT * FROM resume r WHERE r.uuid =?", ps -> {
+        return (Resume) helper.executeHelper("SELECT * FROM resume r WHERE r.uuid =?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -37,7 +37,6 @@ public class SqlStorage implements Storage {
             }
             return new Resume(uuid, rs.getString("full_name"));
         });
-        return rez;
     }
 
     @Override
@@ -63,7 +62,12 @@ public class SqlStorage implements Storage {
                 return null;
             });
         } catch (StorageException e) {
-            throw new ExistStorageException(r.getUuid());
+            if(e.getMessage().contains("повторяющееся значение ключа нарушает ограничение уникальности")) {
+                throw new ExistStorageException(r.getUuid());
+            }
+            else {
+                throw e;
+            }
         }
     }
 

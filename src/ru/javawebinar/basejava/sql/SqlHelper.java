@@ -15,10 +15,10 @@ public class SqlHelper <T> {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
-    public T executeHelper(String statement, ExecuteCode excode) {
+    public T executeHelper(String statement, ExecuteCode<T> excode) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(statement)) {
-            return (T)excode.execute(ps);
+            return excode.execute(ps);
         } catch (SQLException e) {
             throw new StorageException(e);
         }
