@@ -39,9 +39,12 @@ public class SqlStorage implements Storage {
                     }
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        String value = rs.getString("value");
-                        ContactType type = ContactType.valueOf(rs.getString("type"));
-                        r.addContact(type, value);
+                        String contactType = rs.getString("type");
+                        if (contactType != null) {
+                            ContactType type = ContactType.valueOf(contactType);
+                            String value = rs.getString("value");
+                            r.addContact(type, value);
+                        }
                     } while (rs.next());
 
                     return r;
@@ -50,14 +53,34 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        sqlHelper.execute("UPDATE resume SET full_name = ? WHERE uuid = ?", ps -> {
-            ps.setString(1, r.getFullName());
-            ps.setString(2, r.getUuid());
-            if (ps.executeUpdate() == 0) {
-                throw new NotExistStorageException(r.getUuid());
-            }
-            return null;
-        });
+        sqlHelper.transactionalExecute(conn -> {
+                    try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
+                        ps.setString(1, r.getFullName());
+                        ps.setString(2, r.getUuid());
+                        if (ps.executeUpdate() == 0) {
+                            throw new NotExistStorageException(r.getUuid());
+                        }
+                    }
+                    try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET type = ?, value = ? WHERE resume_uuid = ?")) {
+                        if (r.getContacts().isEmpty()) {
+                            sqlHelper.execute("DELETE FROM contact WHERE resume_uuid = ?", ps1 -> {
+                                ps1.setString(1, r.getUuid());
+                                ps1.execute();
+                                return null;
+                            });
+                        } else {
+                            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
+                                ps.setString(1, e.getKey().name());
+                                ps.setString(2, e.getValue());
+                                ps.setString(3, r.getUuid());
+                                ps.addBatch();
+                            }
+                            ps.executeBatch();
+                        }
+                    }
+                    return null;
+                }
+        );
     }
 
     @Override
@@ -95,21 +118,38 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume r ORDER BY full_name,uuid", ps -> {
+        return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN\n" +
+                "(SELECT  resume_uuid, array_to_string(array_agg(type),',') AS type_arr, \n" +
+                "    array_to_string(array_agg(value),',') AS value_arr\n" +
+                "FROM  contact c \n" +
+                "GROUP BY resume_uuid) rez ON r.uuid = rez.resume_uuid;", ps -> {
             ResultSet rs = ps.executeQuery();
             List<Resume> resumes = new ArrayList<>();
             while (rs.next()) {
-                resumes.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
-            }
-            return resumes;
-        });
-    }
+                Resume r = new Resume(rs.getString("uuid"), rs.getString("full_name"));
+                if (rs.getString("type_arr") != null) {
+                String[] contactTypeArray = rs.getString("type_arr").split(",");
+                String[] valueArray = rs.getString("value_arr").split(",");
 
-    @Override
-    public int size() {
-        return sqlHelper.execute("SELECT count(*) FROM resume", st -> {
-            ResultSet rs = st.executeQuery();
-            return rs.next() ? rs.getInt(1) : 0;
-        });
+                    for (int i = 0; i < contactTypeArray.length; i++) {
+                        ContactType type = ContactType.valueOf(contactTypeArray[i]);
+                        String value = valueArray[i];
+                        r.addContact(type, value);
+                    }
+                }
+
+
+                resumes.add(r);
+            }
+                return resumes;
+            });
+        }
+
+        @Override
+        public int size () {
+            return sqlHelper.execute("SELECT count(*) FROM resume", st -> {
+                ResultSet rs = st.executeQuery();
+                return rs.next() ? rs.getInt(1) : 0;
+            });
+        }
     }
-}
