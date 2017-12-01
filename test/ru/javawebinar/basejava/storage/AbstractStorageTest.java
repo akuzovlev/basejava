@@ -94,10 +94,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() throws Exception {
         Resume newResume = new Resume(UUID_1, "New Name");
+        newResume.addContact(ContactType.PHONE, "55555");
         storage.update(newResume);
-
-        Resume r2 = storage.get(R1.getUuid());
-
         assertTrue(newResume.equals(storage.get(UUID_1)));
     }
 

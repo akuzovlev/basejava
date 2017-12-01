@@ -46,7 +46,6 @@ public class SqlStorage implements Storage {
                             r.addContact(type, value);
                         }
                     } while (rs.next());
-
                     return r;
                 });
     }
@@ -61,22 +60,19 @@ public class SqlStorage implements Storage {
                             throw new NotExistStorageException(r.getUuid());
                         }
                     }
-                    try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET type = ?, value = ? WHERE resume_uuid = ?")) {
-                        if (r.getContacts().isEmpty()) {
-                            sqlHelper.execute("DELETE FROM contact WHERE resume_uuid = ?", ps1 -> {
-                                ps1.setString(1, r.getUuid());
-                                ps1.execute();
-                                return null;
-                            });
-                        } else {
-                            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                                ps.setString(1, e.getKey().name());
-                                ps.setString(2, e.getValue());
-                                ps.setString(3, r.getUuid());
-                                ps.addBatch();
-                            }
-                            ps.executeBatch();
+                    sqlHelper.execute("DELETE FROM contact WHERE resume_uuid = ?", ps1 -> {
+                        ps1.setString(1, r.getUuid());
+                        ps1.execute();
+                        return null;
+                    });
+                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
+                        for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
+                            ps.setString(1, r.getUuid());
+                            ps.setString(2, e.getKey().name());
+                            ps.setString(3, e.getValue());
+                            ps.addBatch();
                         }
+                        ps.executeBatch();
                     }
                     return null;
                 }
@@ -128,8 +124,8 @@ public class SqlStorage implements Storage {
             while (rs.next()) {
                 Resume r = new Resume(rs.getString("uuid"), rs.getString("full_name"));
                 if (rs.getString("type_arr") != null) {
-                String[] contactTypeArray = rs.getString("type_arr").split(",");
-                String[] valueArray = rs.getString("value_arr").split(",");
+                    String[] contactTypeArray = rs.getString("type_arr").split(",");
+                    String[] valueArray = rs.getString("value_arr").split(",");
 
                     for (int i = 0; i < contactTypeArray.length; i++) {
                         ContactType type = ContactType.valueOf(contactTypeArray[i]);
@@ -141,15 +137,15 @@ public class SqlStorage implements Storage {
 
                 resumes.add(r);
             }
-                return resumes;
-            });
-        }
-
-        @Override
-        public int size () {
-            return sqlHelper.execute("SELECT count(*) FROM resume", st -> {
-                ResultSet rs = st.executeQuery();
-                return rs.next() ? rs.getInt(1) : 0;
-            });
-        }
+            return resumes;
+        });
     }
+
+    @Override
+    public int size() {
+        return sqlHelper.execute("SELECT count(*) FROM resume", st -> {
+            ResultSet rs = st.executeQuery();
+            return rs.next() ? rs.getInt(1) : 0;
+        });
+    }
+}
