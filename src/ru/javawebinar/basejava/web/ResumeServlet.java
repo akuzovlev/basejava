@@ -1,14 +1,17 @@
 package ru.javawebinar.basejava.web;
 
 import ru.javawebinar.basejava.Config;
+import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.SqlStorage;
+import ru.javawebinar.basejava.model.Section;
+import ru.javawebinar.basejava.model.SectionType;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.io.OutputStream;
+import java.util.Map;
 
 public class ResumeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
@@ -20,16 +23,62 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 //        response.setHeader("Content-Type", "text/html; charset=UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        //String name = request.getParameter("name");
 
-        System.out.println("hgdfhghfg");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table border=\"1\">");
 
-      //  response.getWriter().write(Config.get().getStorage().getAllSorted().size());
+        sb.append("<tr>");
 
-        //List<Resume> resumes = Config.get().getStorage().getAllSorted();
+        sb.append("<td>");
+        sb.append("Uuid");
+        sb.append("</td>");
 
+        sb.append("<td>");
+        sb.append("Fullname");
+        sb.append("</td>");
 
+        sb.append("<td>");
+        sb.append("Contacts");
+        sb.append("</td>");
 
+        for (SectionType s : SectionType.values()) {
+            sb.append("<td>");
+            sb.append(s.getTitle());
+            sb.append("</td>");
+        }
 
+        sb.append("</tr>");
+
+        for (Resume r : Config.get().getStorage().getAllSorted()) {
+            sb.append("<tr>");
+
+            sb.append("<td>");
+            sb.append(r.getUuid());
+            sb.append("</td>");
+
+            sb.append("<td>");
+            sb.append(r.getFullName());
+            sb.append("</td>");
+
+            sb.append("<td>");
+            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
+                sb.append(e.getKey() + ": " + e.getValue() + "<br>");
+            }
+            sb.append("</td>");
+
+            for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
+                sb.append("<td>");
+                sb.append(e.getValue());
+                sb.append("</td>");
+            }
+
+            sb.append("</tr>");
+        }
+
+        sb.append("</table>");
+        OutputStream outStream = response.getOutputStream();
+        outStream.write(sb.toString().getBytes("UTF-8"));
+        outStream.flush();
+        outStream.close();
     }
 }
