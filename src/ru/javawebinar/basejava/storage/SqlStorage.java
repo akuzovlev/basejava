@@ -6,10 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // TODO implement Section (except OrganizationSection)
 // TODO Join and split ListSection by `\n`
@@ -89,23 +86,29 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("" +
+        Map<String, Resume> map = new LinkedHashMap<>();
+        sqlHelper.execute("" +
                 "   SELECT * FROM resume r\n" +
-                "LEFT JOIN contact c ON r.uuid = c.resume_uuid\n" +
                 "ORDER BY full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
-            Map<String, Resume> map = new LinkedHashMap<>();
             while (rs.next()) {
                 String uuid = rs.getString("uuid");
+                map.put(uuid, new Resume(uuid, rs.getString("full_name")));
+            }
+            return null;
+        });
+
+        sqlHelper.execute("" +
+                "   SELECT * FROM contact r\n", ps -> {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String uuid = rs.getString("resume_uuid");
                 Resume resume = map.get(uuid);
-                if (resume == null) {
-                    resume = new Resume(uuid, rs.getString("full_name"));
-                    map.put(uuid, resume);
-                }
                 addContact(rs, resume);
             }
-            return new ArrayList<>(map.values());
+            return null;
         });
+        return new ArrayList<>(map.values());
     }
 
     @Override
