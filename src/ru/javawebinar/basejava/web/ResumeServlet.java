@@ -37,16 +37,6 @@ public class ResumeServlet extends HttpServlet {
         sb.append("Fullname");
         sb.append("</td>");
 
-        sb.append("<td>");
-        sb.append("Contacts");
-        sb.append("</td>");
-
-        for (SectionType s : SectionType.values()) {
-            sb.append("<td>");
-            sb.append(s.getTitle());
-            sb.append("</td>");
-        }
-
         sb.append("</tr>");
 
         for (Resume r : Config.get().getStorage().getAllSorted()) {
@@ -59,18 +49,6 @@ public class ResumeServlet extends HttpServlet {
             sb.append("<td>");
             sb.append(r.getFullName());
             sb.append("</td>");
-
-            sb.append("<td>");
-            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                sb.append(e.getKey() + ": " + e.getValue() + "<br>");
-            }
-            sb.append("</td>");
-
-            for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
-                sb.append("<td>");
-                sb.append(e.getValue());
-                sb.append("</td>");
-            }
 
             sb.append("</tr>");
         }
