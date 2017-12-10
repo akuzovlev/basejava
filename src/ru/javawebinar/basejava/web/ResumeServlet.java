@@ -3,17 +3,26 @@ package ru.javawebinar.basejava.web;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.Section;
-import ru.javawebinar.basejava.model.SectionType;
+import ru.javawebinar.basejava.storage.Storage;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Map;
+import java.io.Writer;
 
 public class ResumeServlet extends HttpServlet {
+
+    private Storage storage; // = Config.get().getStorage();
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage = Config.get().getStorage();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
     }
@@ -23,40 +32,31 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 //        response.setHeader("Content-Type", "text/html; charset=UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("<table border=\"1\">");
-
-        sb.append("<tr>");
-
-        sb.append("<td>");
-        sb.append("Uuid");
-        sb.append("</td>");
-
-        sb.append("<td>");
-        sb.append("Fullname");
-        sb.append("</td>");
-
-        sb.append("</tr>");
-
-        for (Resume r : Config.get().getStorage().getAllSorted()) {
-            sb.append("<tr>");
-
-            sb.append("<td>");
-            sb.append(r.getUuid());
-            sb.append("</td>");
-
-            sb.append("<td>");
-            sb.append(r.getFullName());
-            sb.append("</td>");
-
-            sb.append("</tr>");
+        Writer writer = response.getWriter();
+        writer.write(
+                "<html>\n" +
+                        "<head>\n" +
+                        "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                        "    <link rel=\"stylesheet\" href=\"css/style.css\">\n" +
+                        "    <title>Список всех резюме</title>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "<section>\n" +
+                        "<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\">\n" +
+                        "    <tr>\n" +
+                        "        <th>Имя</th>\n" +
+                        "        <th>Email</th>\n" +
+                        "    </tr>\n");
+        for (Resume resume : storage.getAllSorted()) {
+            writer.write(
+                    "<tr>\n" +
+                            "     <td><a href=\"resume?uuid=" + resume.getUuid() + "\">" + resume.getFullName() + "</a></td>\n" +
+                            "     <td>" + resume.getContact(ContactType.MAIL) + "</td>\n" +
+                            "</tr>\n");
         }
-
-        sb.append("</table>");
-        OutputStream outStream = response.getOutputStream();
-        outStream.write(sb.toString().getBytes("UTF-8"));
-        outStream.flush();
-        outStream.close();
+        writer.write("</table>\n" +
+                "</section>\n" +
+                "</body>\n" +
+                "</html>\n");
     }
 }
