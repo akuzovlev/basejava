@@ -58,6 +58,12 @@ public class ResumeServlet extends HttpServlet {
             case "edit":
                 r = storage.get(uuid);
                 break;
+            case "add":
+                r = new Resume("");
+                storage.save(r);
+                System.out.println(r);
+                action = "edit";
+                break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
         }

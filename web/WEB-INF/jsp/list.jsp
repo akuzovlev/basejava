@@ -1,4 +1,6 @@
 <%@ page import="ru.javawebinar.basejava.model.ContactType" %>
+<%@ page import="ru.javawebinar.basejava.model.Resume" %>
+<%@ page import="ru.javawebinar.basejava.storage.SqlStorage" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -28,6 +30,8 @@
             </tr>
         </c:forEach>
     </table>
+    <br>
+    <a href="resume?action=add">Добавить резюме</a>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

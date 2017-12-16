@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -17,6 +18,15 @@
                          type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactType, java.lang.String>"/>
                 <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
         </c:forEach>
+
+    <p>
+        <c:forEach var="type" items="<%=SectionType.values()%>">
+    <h3>${type.title}</h3>
+    <p>
+            ${resume.getSection(type)}
+        <br>
+        </c:forEach>
+
     <p>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
