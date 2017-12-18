@@ -19,17 +19,17 @@
             <dd><input type="text" name="fullName" size=50 value="${resume.fullName}"></dd>
         </dl>
         <h3>Контакты:</h3>
-        <c:forEach var="type" items="<%=ContactType.values()%>">
+        <c:forEach var="sectionType" items="<%=ContactType.values()%>">
             <dl>
-                <dt>${type.title}</dt>
-                <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
+                <dt>${sectionType.title}</dt>
+                <dd><input type="text" name="${sectionType.name()}" size=30 value="${resume.getContact(sectionType)}"></dd>
             </dl>
         </c:forEach>
         <h3>Секции:</h3>
-        <c:forEach var="type" items="<%=SectionType.values()%>">
+        <c:forEach var="sectionType" items="<%=SectionType.values()%>">
             <dl>
-                <dt>${type.title}</dt>
-                <dd><input type="text" name="${type.name()}" size=30 value="${resume.getSection(type)}"></dd>
+                <dt>${sectionType.title}</dt>
+                <dd><input type="text" name="${sectionType.name()}" size=30 value="${resume.getSection(sectionType)}"></dd>
             </dl>
         </c:forEach>
         <hr>
