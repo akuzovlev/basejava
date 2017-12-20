@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static ru.javawebinar.basejava.model.SectionType.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -39,21 +40,37 @@ public class ResumeServlet extends HttpServlet {
         }
 
         for (SectionType stype : SectionType.values()) {
-            String value = request.getParameter(stype.name());
-            if (value != null && value.trim().length() != 0) {
+            String[] value = request.getParameterValues(stype.name());
+            if (value != null && value[0].trim().length() != 0) {
                 switch (stype) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        r.addSection(stype, new TextSection(value));
+                        r.addSection(stype, new TextSection(value[0]));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        r.addSection(stype, new ListSection(value.split("\\r\\n")));
+                        r.addSection(stype, new ListSection(value));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        String [] values = value.split(" ");
-                        r.addSection(stype, new OrganizationSection(new Organization(values[0],values[1])));
+                        List<Organization> organizations = new ArrayList<>();
+                        for (int i = 0; i < value.length; ) {
+                            String[] positionData = request.getParameterValues(value[i]);
+                            if (positionData == null) {
+                                organizations.add(new Organization(value[i], value[i + 1]));
+                                i += 2;
+                            } else {
+                                List<Organization.Position> positions = new ArrayList<>();
+                                for (int j = 0; j < positionData.length; ) {
+                                    positions.add(new Organization.Position(LocalDate.parse(positionData[j]), LocalDate.parse(positionData[j + 1]), positionData[j + 2], positionData[j + 3]));
+                                    j += 4;
+                                }
+                                organizations.add(new Organization(new Link(value[i], value[i + 1]), positions));
+                                i += 2;
+                            }
+                        }
+                        r.addSection(stype, new OrganizationSection(organizations));
+
                         break;
                 }
             } else {

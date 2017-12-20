@@ -31,20 +31,13 @@
             <jsp:useBean id="section"
                          type="ru.javawebinar.basejava.model.Section"/>
         <c:choose>
-            <c:when test="${sectionType.title == 'Личные качества'}">${resume.getSection(sectionType)}</c:when>
-            <c:when test="${sectionType.title == 'Позиция'}">${resume.getSection(sectionType)}</c:when>
-        <c:when test="${sectionType.title == 'Достижения'}">
+            <c:when test="${sectionType.title == 'Личные качества' || sectionType.title == 'Позиция'}" >${resume.getSection(sectionType)}</c:when>
+        <c:when test="${sectionType.title == 'Достижения' || sectionType.title == 'Квалификация'}">
         <c:forEach var="record" items="<%=((ListSection)section).getItems()%>">
                 &#9672; ${record} <br>
         </c:forEach>
         </c:when>
-        <c:when test="${sectionType.title == 'Квалификация'}">
-        <c:forEach var="record" items="<%=((ListSection)section).getItems()%>">
-                &#9672; ${record} <br>
-        </c:forEach>
-        </c:when>
-
-        <c:when test="${sectionType.title == 'Опыт работы'}">
+        <c:when test="${sectionType.title == 'Опыт работы' || sectionType.title == 'Образование'}">
         <c:forEach var="record" items="<%=((OrganizationSection)section).getOrganizations()%>">
                 <a href='${record.homePage.url}'>${record.homePage.name}</a>
                 <br>
@@ -55,19 +48,7 @@
                 </c:forEach>
         <br>
         </c:forEach>
-        </c:when>
-                <c:when test="${sectionType.title == 'Образование'}">
-                <c:forEach var="record" items="<%=((OrganizationSection)section).getOrganizations()%>">
-                <a href='${record.homePage.url}'>${record.homePage.name}</a>
-                <br>
-                <c:forEach var="position" items="${record.positions}">
-                from ${position.startDate} to ${position.endDate}   <b>${position.title}</b> <br>
-                    ${position.description}
-                <br>
-                </c:forEach>
-                <br>
-                </c:forEach>
-                </c:when>
+         </c:when>
         <c:otherwise>$</c:otherwise>
         </c:choose>
         <br>

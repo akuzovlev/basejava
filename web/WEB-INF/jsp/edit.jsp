@@ -41,64 +41,47 @@
                 <jsp:useBean id="section"
                              type="ru.javawebinar.basejava.model.Section"/>
                 <c:choose>
-                    <c:when test="${sectionType.title == 'Личные качества'}">
+                    <c:when test="${sectionType.title == 'Личные качества' || sectionType.title == 'Позиция'}">
                 <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${resume.getSection(sectionType)}</textarea></dd>
                     </c:when>
 
-                    <c:when test="${sectionType.title == 'Позиция'}">
-                <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${resume.getSection(sectionType)}</textarea></dd>
-                </c:when>
-                    <c:when test="${sectionType.title == 'Достижения'}">
-                <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}"><c:forEach var="record" items="<%=((ListSection)section).getItems()%>">${record}
-</c:forEach></textarea></dd>
-                    </c:when>
-                    <c:when test="${sectionType.title == 'Квалификация'}">
-                <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}"><c:forEach var="record" items="<%=((ListSection)section).getItems()%>">${record}
-</c:forEach></textarea></dd>
+                    <c:when test="${sectionType.title == 'Достижения' || sectionType.title == 'Квалификация'}">
+
+                    <c:forEach var="record" items="<%=((ListSection)section).getItems()%>">
+                        <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${record}</textarea></dd>
+                    </c:forEach>
                     </c:when>
 
-                    <c:when test="${sectionType.title == 'Опыт работы'}">
-            <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">
-                        <c:forEach var="record" items="<%=((OrganizationSection)section).getOrganizations()%>">
-                            <a href='${record.homePage.url}'>${record.homePage.name}</a>
-                            <br>
-                            <c:forEach var="position" items="${record.positions}">
-                                from ${position.startDate} to ${position.endDate}   <b>${position.title}</b> <br>
-                                ${position.description}
-                                <br>
-                            </c:forEach>
-                            <br>
-                        </c:forEach>
-                             </textarea></dd>
-                    </c:when>
-                    <c:when test="${sectionType.title == 'Образование'}">
-                        <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">
-                        <c:forEach var="record" items="<%=((OrganizationSection)section).getOrganizations()%>">
-                            <a href='${record.homePage.url}'>${record.homePage.name}</a>
-                            <br>
-                            <c:forEach var="position" items="${record.positions}">
-                                from ${position.startDate} to ${position.endDate}   <b>${position.title}</b> <br>
-                                ${position.description}
-                                <br>
-                            </c:forEach>
-                            <br>
-                        </c:forEach>
-                        </textarea></dd>
+                    <c:when test="${sectionType.title == 'Опыт работы' || sectionType.title == 'Образование'}">
+                <c:forEach var="record" items="<%=((OrganizationSection)section).getOrganizations()%>">
+
+                    <dd>Название организации <textarea cols="20" rows="1" title="" name="${sectionType.name()}">${record.homePage.name}</textarea></dd>
+                    <dd>Сайт организации <textarea cols="20" rows="1" title="" name="${sectionType.name()}">${record.homePage.url}</textarea></dd>
+                        <br>
+                    <c:choose>
+                        <c:when test="${record.positions.size() == 0}">
+
+                                <dd>Дата начала <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                                <dd>Дата окончания <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                                <dd>Должность <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                                <dd>Описание <br><textarea cols="100" rows="5" title="" name="${record.homePage.name}"></textarea></dd>
+                        </c:when>
+                        <c:otherwise>
+
+                    <c:forEach var="position" items="${record.positions}">
+                        <dd>Дата начала <textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.startDate}</textarea></dd>
+                        <dd>Дата окончания <textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.endDate}</textarea></dd>
+                        <dd>Должность <textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.title}</textarea></dd>
+                        <dd>Описание <br><textarea cols="100" rows="5" title="" name="${record.homePage.name}">${position.description}</textarea></dd>
+                    </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+
+                </c:forEach>
                     </c:when>
                     <c:otherwise>$</c:otherwise>
                 </c:choose>
                 <br>
-
-
-
-
-          <%--  <dl>
-                <dt>${sectionType.title}</dt>
-                &lt;%&ndash;<dd><input type="text" name="${sectionType.name()}" size=30 value="${resume.getSection(sectionType)}"></dd>&ndash;%&gt;
-                <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${resume.getSection(sectionType)}</textarea></dd>
-                --%>
-
-
             </dl>
         </c:forEach>
         <hr>
