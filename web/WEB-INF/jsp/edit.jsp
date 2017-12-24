@@ -30,16 +30,11 @@
         <h3>Секции:</h3>
         <c:forEach var="sectionType" items="<%=SectionType.values()%>">
         <dl>
-
-
-
                 <jsp:useBean id="sectionType"
                              type="ru.javawebinar.basejava.model.SectionType"/>
                 <dt>${sectionType.title}</dt>
                 <p>
-                <c:set var="section" value="<%=resume.getSection(sectionType)%>"/>
-                <jsp:useBean id="section"
-                             type="ru.javawebinar.basejava.model.Section"/>
+
                 <c:choose>
                     <c:when test="${sectionType.title == 'Личные качества' || sectionType.title == 'Позиция'}">
                 <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${resume.getSection(sectionType)}</textarea></dd>
@@ -47,19 +42,52 @@
 
                     <c:when test="${sectionType.title == 'Достижения' || sectionType.title == 'Квалификация'}">
 
-                    <c:forEach var="record" items="<%=((ListSection)section).getItems()%>">
+                        <c:set var="listSection" value="<%=resume.getSection(sectionType)%>"/>
+                        <jsp:useBean id="listSection"
+                                     class="ru.javawebinar.basejava.model.ListSection"/>
+
+                        <c:choose>
+                            <c:when test="${listSection.items == null}">
+                                <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}"></textarea></dd>
+                            </c:when>
+                        </c:choose>
+
+                    <c:forEach var="record" items="<%=listSection.getItems()%>">
                         <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${record}</textarea></dd>
                     </c:forEach>
                     </c:when>
 
                     <c:when test="${sectionType.title == 'Опыт работы' || sectionType.title == 'Образование'}">
-                <c:forEach var="record" items="<%=((OrganizationSection)section).getOrganizations()%>">
+
+                        <c:set var="organizationSection" value="<%=resume.getSection(sectionType)%>"/>
+                        <jsp:useBean id="organizationSection"
+                                     class="ru.javawebinar.basejava.model.OrganizationSection"/>
+
+
+            <c:choose>
+                <c:when test="${organizationSection.organizations == null}">
+
+                    <dd>Название организации <textarea cols="20" rows="1" title="" name="${sectionType.name()}">${record.homePage.name}</textarea></dd>
+                    <dd>Сайт организации <textarea cols="20" rows="1" title="" name="${sectionType.name()}">${record.homePage.url}</textarea></dd>
+                    <br>
+
+                        <dd>Дата начала <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                        <dd>Дата окончания <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                        <dd>Должность <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                        <dd>Описание <br><textarea cols="100" rows="5" title="" name="${record.homePage.name}"></textarea></dd>
+
+                </c:when>
+            </c:choose>
+
+
+                <c:forEach var="record" items="<%=organizationSection.getOrganizations()%>">
 
                     <dd>Название организации <textarea cols="20" rows="1" title="" name="${sectionType.name()}">${record.homePage.name}</textarea></dd>
                     <dd>Сайт организации <textarea cols="20" rows="1" title="" name="${sectionType.name()}">${record.homePage.url}</textarea></dd>
                         <br>
+
                     <c:choose>
-                        <c:when test="${record.positions.size() == 0}">
+                        <c:when test="${record.positions.size() == 0 }">
 
                                 <dd>Дата начала <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
                                 <dd>Дата окончания <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>

@@ -62,7 +62,8 @@ public class ResumeServlet extends HttpServlet {
                             } else {
                                 List<Organization.Position> positions = new ArrayList<>();
                                 for (int j = 0; j < positionData.length; ) {
-                                    positions.add(new Organization.Position(LocalDate.parse(positionData[j]), LocalDate.parse(positionData[j + 1]), positionData[j + 2], positionData[j + 3]));
+
+                                    positions.add(new Organization.Position(positionData[j].isEmpty() ? LocalDate.parse(positionData[j]) : null, positionData[j + 1].isEmpty() ? LocalDate.parse(positionData[j + 1]) : null, positionData[j + 2], positionData[j + 3]));
                                     j += 4;
                                 }
                                 organizations.add(new Organization(new Link(value[i], value[i + 1]), positions));
@@ -104,7 +105,6 @@ public class ResumeServlet extends HttpServlet {
             case "add":
                 r = new Resume("");
                 storage.save(r);
-                System.out.println(r);
                 action = "edit";
                 break;
             default:

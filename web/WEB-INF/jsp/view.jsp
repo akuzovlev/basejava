@@ -27,18 +27,31 @@
                          type="ru.javawebinar.basejava.model.SectionType"/>
     <h3>${sectionType.title}</h3>
     <p>
-            <c:set var="section" value="<%=resume.getSection(sectionType)%>"/>
-            <jsp:useBean id="section"
-                         type="ru.javawebinar.basejava.model.Section"/>
         <c:choose>
             <c:when test="${sectionType.title == 'Личные качества' || sectionType.title == 'Позиция'}" >${resume.getSection(sectionType)}</c:when>
+
         <c:when test="${sectionType.title == 'Достижения' || sectionType.title == 'Квалификация'}">
-        <c:forEach var="record" items="<%=((ListSection)section).getItems()%>">
+                <c:set var="listSection" value="<%=resume.getSection(sectionType)%>"/>
+                <jsp:useBean id="listSection"
+                             class="ru.javawebinar.basejava.model.ListSection"/>
+            <c:choose>
+            <c:when test="${listSection.items != null}">
+        <c:forEach var="record" items="${listSection.items}">
                 &#9672; ${record} <br>
         </c:forEach>
+            </c:when>
+            </c:choose>
         </c:when>
+
         <c:when test="${sectionType.title == 'Опыт работы' || sectionType.title == 'Образование'}">
-        <c:forEach var="record" items="<%=((OrganizationSection)section).getOrganizations()%>">
+                <c:set var="organizationSection" value="<%=resume.getSection(sectionType)%>"/>
+                <jsp:useBean id="organizationSection"
+                     class="ru.javawebinar.basejava.model.OrganizationSection"/>
+
+            <c:choose>
+            <c:when test="${organizationSection.organizations != null}">
+
+        <c:forEach var="record" items="${organizationSection}">
                 <a href='${record.homePage.url}'>${record.homePage.name}</a>
                 <br>
                 <c:forEach var="position" items="${record.positions}">
@@ -48,8 +61,10 @@
                 </c:forEach>
         <br>
         </c:forEach>
+            </c:when>
+            </c:choose>
+
          </c:when>
-        <c:otherwise>$</c:otherwise>
         </c:choose>
         <br>
         </c:forEach>
