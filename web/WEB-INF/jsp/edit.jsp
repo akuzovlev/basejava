@@ -71,9 +71,9 @@
                     <dd>Сайт организации <textarea cols="20" rows="1" title="" name="${sectionType.name()}">${record.homePage.url}</textarea></dd>
                     <br>
 
-                        <dd>Дата начала <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
-                        <dd>Дата окончания <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
-                        <dd>Должность <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                        <dd>Дата начала (в формате 2017-01-01)<textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                        <dd>Дата окончания (в формате 2017-01-01)<textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                    <br><dd>Должность <textarea cols="20" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
                         <dd>Описание <br><textarea cols="100" rows="5" title="" name="${record.homePage.name}"></textarea></dd>
 
                 </c:when>
@@ -89,17 +89,17 @@
                     <c:choose>
                         <c:when test="${record.positions.size() == 0 }">
 
-                                <dd>Дата начала <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
-                                <dd>Дата окончания <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
-                                <dd>Должность <textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                                <dd>Дата начала (в формате 2017-01-01)<textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                                <dd>Дата окончания (в формате 2017-01-01)<textarea cols="10" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
+                            <br><dd>Должность <textarea cols="20" rows="1" title="" name="${record.homePage.name}"></textarea></dd>
                                 <dd>Описание <br><textarea cols="100" rows="5" title="" name="${record.homePage.name}"></textarea></dd>
                         </c:when>
                         <c:otherwise>
 
                     <c:forEach var="position" items="${record.positions}">
-                        <dd>Дата начала <textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.startDate}</textarea></dd>
-                        <dd>Дата окончания <textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.endDate}</textarea></dd>
-                        <dd>Должность <textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.title}</textarea></dd>
+                        <dd>Дата начала (в формате 2017-01-01)<textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.startDate}</textarea></dd>
+                        <dd>Дата окончания (в формате 2017-01-01)<textarea cols="10" rows="1" title="" name="${record.homePage.name}">${position.endDate}</textarea></dd>
+                        <br><dd>Должность <textarea cols="20" rows="1" title="" name="${record.homePage.name}">${position.title}</textarea></dd>
                         <dd>Описание <br><textarea cols="100" rows="5" title="" name="${record.homePage.name}">${position.description}</textarea></dd>
                     </c:forEach>
                         </c:otherwise>

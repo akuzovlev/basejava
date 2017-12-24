@@ -51,14 +51,20 @@
             <c:choose>
             <c:when test="${organizationSection.organizations != null}">
 
-        <c:forEach var="record" items="${organizationSection}">
-                <a href='${record.homePage.url}'>${record.homePage.name}</a>
+        <c:forEach var="record" items="${organizationSection.organizations}">
+                <a href='${record.homePage.url == null ? "" : record.homePage.url}'>${record.homePage.name == null ? "" : record.homePage.name }</a>
                 <br>
+
+                <c:choose>
+                <c:when test="${record.positions != null}">
                 <c:forEach var="position" items="${record.positions}">
                 from ${position.startDate} to ${position.endDate}   <b>${position.title}</b> <br>
                     ${position.description}
                 <br>
                 </c:forEach>
+            </c:when>
+            </c:choose>
+
         <br>
         </c:forEach>
             </c:when>

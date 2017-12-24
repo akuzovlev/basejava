@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
+
 public class ResumeServlet extends HttpServlet {
 
     private Storage storage; // = Config.get().getStorage();
@@ -62,8 +64,10 @@ public class ResumeServlet extends HttpServlet {
                             } else {
                                 List<Organization.Position> positions = new ArrayList<>();
                                 for (int j = 0; j < positionData.length; ) {
+                                    if (!positionData[j].isEmpty()) {
+                                        positions.add(new Organization.Position(LocalDate.parse(positionData[j]), !positionData[j + 1].isEmpty() ? LocalDate.parse(positionData[j + 1]) : NOW, positionData[j + 2], positionData[j + 3]));
 
-                                    positions.add(new Organization.Position(positionData[j].isEmpty() ? LocalDate.parse(positionData[j]) : null, positionData[j + 1].isEmpty() ? LocalDate.parse(positionData[j + 1]) : null, positionData[j + 2], positionData[j + 3]));
+                                    }
                                     j += 4;
                                 }
                                 organizations.add(new Organization(new Link(value[i], value[i + 1]), positions));
