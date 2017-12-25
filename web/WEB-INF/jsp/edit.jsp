@@ -2,6 +2,7 @@
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page import="ru.javawebinar.basejava.model.ListSection" %>
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -40,22 +41,75 @@
                 <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${resume.getSection(sectionType)}</textarea></dd>
                     </c:when>
 
-                    <c:when test="${sectionType.title == 'Достижения' || sectionType.title == 'Квалификация'}">
+                    <c:when test="${sectionType.title == 'Достижения'}">
 
-                        <c:set var="listSection" value="<%=resume.getSection(sectionType)%>"/>
-                        <jsp:useBean id="listSection"
+                        <c:set var="ach" value="<%=resume.getSection(sectionType)%>"/>
+                        <jsp:useBean id="ach"
                                      class="ru.javawebinar.basejava.model.ListSection"/>
 
+                        <script>
+                           function addAch() {
+                               $( "#addAch" ).append( "<dd><textarea cols=\"100\" rows=\"5\" title=\"\" name=\"${sectionType.name()}\"></textarea><input type=\"button\" value=\"Удалить поле\" name=\"rmField\" OnClick=\"rmAch(this);\"></dd>" );
+                            }
+                           function rmAch(element) {
+                               $(element).parent().remove()
+                           }
+
+                        </script>
+
                         <c:choose>
-                            <c:when test="${listSection.items == null}">
-                                <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}"></textarea></dd>
+                            <c:when test="${ach.items == null}">
+                                <dd><textarea cols="100" rows="5" title="" id = "${sectionType.name()}" name="${sectionType.name()}"></textarea>
+                                    <input type="button" value="Удалить поле" name="rmField" OnClick="rmAch(this);">
+                                </dd>
                             </c:when>
                         </c:choose>
 
-                    <c:forEach var="record" items="<%=listSection.getItems()%>">
-                        <dd><textarea cols="100" rows="5" title="" name="${sectionType.name()}">${record}</textarea></dd>
+                    <c:forEach var="record" items="<%=ach.getItems()%>">
+                        <dd><textarea cols="100" rows="5" title="" id = "${sectionType.name()}" name="${sectionType.name()}">${record}</textarea>
+                            <input type="button" value="Удалить поле" name="rmField" OnClick="rmAch(this);">
+                        </dd>
+
                     </c:forEach>
+                        <div id="addAch"></div>
+                <input type="button" value="Добавить поле" name="addField" OnClick="addAch();">
                     </c:when>
+
+            <c:when test="${sectionType.title == 'Квалификация'}">
+
+                <c:set var="kval" value="<%=resume.getSection(sectionType)%>"/>
+                <jsp:useBean id="kval"
+                             class="ru.javawebinar.basejava.model.ListSection"/>
+                <script>
+                    function addKval() {
+                        $( "#addKval" ).append( "<dd><textarea cols=\"100\" rows=\"5\" title=\"\" name=\"${sectionType.name()}\"></textarea><input type=\"button\" value=\"Удалить поле\" name=\"rmField\" OnClick=\"rmKval(this);\"></dd>" );
+
+                        function rmKval(element) {
+                            $(element).parent().remove()
+                        }
+                    }
+                </script>
+
+                <c:choose>
+                    <c:when test="${kval.items == null}">
+                        <dd><textarea cols="100" rows="5" title="" id = "${sectionType.name()}" name="${sectionType.name()}"></textarea>
+                            <input type="button" value="Удалить поле" name="rmField" OnClick="rmAch(this);">
+                        </dd>
+                    </c:when>
+                </c:choose>
+
+                <c:forEach var="record" items="<%=kval.getItems()%>">
+                    <dd><textarea cols="100" rows="5" title="" id = "${sectionType.name()}" name="${sectionType.name()}">${record}</textarea>
+                        <input type="button" value="Удалить поле" name="rmField" OnClick="rmAch(this);">
+                    </dd>
+                </c:forEach>
+                <div id="addKval"></div>
+                <input type="button" value="Добавить поле" name="addField" OnClick="addKval();">
+
+            </c:when>
+
+
+
 
                     <c:when test="${sectionType.title == 'Опыт работы' || sectionType.title == 'Образование'}">
 
